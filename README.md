@@ -30,8 +30,7 @@ TXG runs entirely in the browser — no installation or backend server is requir
 ```
 
 TheXSSGame/
-├── images/
-│   └── screenshots/  # Screenshots of the game
+├── images/          # Images used in the game
 ├── music/           # Background music and sound effects
 ├── scripts/         # JavaScript files for game logic
 ├── gdpr.html        # GDPR compliance and privacy information
