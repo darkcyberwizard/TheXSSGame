@@ -1,0 +1,1191 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>The XSS Game</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    
+    <!-- External CSS libraries -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"> 
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- External JavaScript libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js" integrity="sha512-E8QSvWZ0eCLGk4km3hxSsNmGWbLtSCSUcewDQPQWZF6pEU8GlT8a5fF32wOl1i8ftdMhssTrF/OhyGWwonTcXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.1/purify.min.js"></script>
+    <script src="scripts/jquery.js"></script>
+    <script src="scripts/script.js"></script>
+    <script src="scripts/aes.js"></script>
+    <script src="scripts/js-fluid-meter.js"></script>
+  </head>
+
+  <body>      
+    <div id="container1" class="container">
+      <!-- Main Game UI -->
+      <div id="mainUI">
+        <!-- Audio elements for game sounds -->
+        <audio id="buttonHoverSound" src="music/buttonHover.mp3" allow="autoplay"> </audio>
+        <audio id="startMenuMusic" src="music/startMenuMusic.mp3" allow="autoplay"></audio>
+        <audio id="buttonSelectSound" src="music/buttonSelect.mp3" allow="autoplay"></audio>
+        <audio id="buttonErrorSound" src="music/buttonError.mp3" allow="autoplay"></audio>
+        
+        <!-- Main menu buttons -->
+        <button id="startGameButton1" class="button" onmouseenter="playButtonHoverMusic()" onclick="showSelectPlayerNameUI()">Start Game</button>
+        <a href="https://owasp.org/www-community/attacks/xss/" target="_blank"><button id="XSSResourcesButton1" class="button" onmouseenter="playButtonHoverMusic()" onclick="playButtonSelectMusic()">Extra XSS Resources</button></a>
+        <button id="LeaderBoardButton1" class="button" onmouseenter="playButtonHoverMusic()" onclick="showLeaderBoard()">View Leaderboard</button>
+
+        <!-- Game branding and control buttons -->
+        <img id="gamenamegif" src="images/game-name.gif" />
+        <img class="infobtn" src="images/info.png" onclick="displayInfo()"/> 
+        <img class="mutemusicbtn" src="images/mute.png" onclick="playStartMenuMusic()">
+        <img class="playmusicbtn" src="images/speaker.png" onclick="stopStartMenuMusic()">
+      </div>
+
+      <!-- Info Popup Window -->
+      <div id="infoPopUp1" class="overlay" style="display:none;">
+        <div id="mywindow1" class="window infowindow">
+          <div class="window-content info-window-content">
+            <div class="window-header">
+              <p id="gameInfoHeader"> Game Information </p>
+            </div>
+            <div class="window-body">
+              <ul class="poptexts-info">
+                <li class="lang" key="INFO1TXT1">The XSS Game is used to train players on Cross-site scripting attacks. </li>
+                <li class="lang" key="INFO1TXT2">Accept the privacy policy and press Start Game to play. </li>
+                <li class="lang" key="INFO1TXT3">Enter the player name and select an avatar.</li>
+                <li class="lang" key="INFO1TXT4">Select a player role.</li>
+                <li class="lang" key="INFO1TXT5">Select the question tiles at the bottom to answer the questions to complete the levels. <div id="questionInfoTile2" class="questionTile">
+                  <p id="questionTileText5" class="questionTileText">Use a VPN</p>
+                </div></li>
+                <li class="lang" key="INFO1TXT5"> <span style="color: #f5b330">Remember, there could be multiple answers for a question.</span></li>
+                <li class="lang" key="INFO1TXT10">Maximum possible points : 92 (<span style="color: rgb(26, 247, 19);"> Correct answer: +2 points</span> and <span style="color: red;">Incorrect answer: -1 point</span>)</li>
+                <li class="lang" key="INFO1TXT6">You can enter the Simulator Zone to interact with elements by clicking the target icon, if it is visible.<img id="InteractivityButton2" class="interactivity-button" src="images/target.png"></li>
+                <li class="lang" key="INFO1TXT7">You can always replay the game by selecting a different role.</li>
+                <li class="lang" key="INFO1TXT8">You are awarded different badges for the of completed roles and simulation zone tasks. </li>
+                <li class="lang" key="INFO1TXT12">You can view the player stats by clicking the stats button. <img id="playerStatboard-Extended-stat-mini" src="images/bar-graph.png"></li>
+                <li class="lang" key="INFO1TXT9">Click Exit to end the game.</li>
+                <li class="lang" key="INFO1TXT11"><span style="color: #f5b330">Don't refresh or close the web browser as this will delete and reset your answers.</span></li>
+              </ul>
+              <button id="OkButton1" class="button" onmouseenter="playButtonHoverMusic()" onclick="closeDisplayInfo()">Ok</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- GDPR Privacy Policy Popup -->
+      <div id="gdprPopup1" class="overlay" style="display:none;">
+        <div id="gdprwindow1" class="window infowindow">
+          <div class="window-content info-window-content">
+            <div class="window-header">
+              <p id="privacyPolicyHeader"> GDPR Privacy Notice for The XSS Game Players</p>
+            </div>
+            <div class="window-body">
+              <ul class="poptexts">
+                <li class="lang" key="INFO1TXT1">We are dedicated to safeguarding the privacy of The XSS Game players by collecting non-personal data for improving the gaming experience. </li>
+                <li class="lang" key="INFO1TXT4">The data is used internally for analysis, enhancing the game without sharing with third parties.</li>
+                <li class="lang" key="INFO1TXT5">Strong security measures are in place to protect this data. </li>
+                <li class="lang" key="INFO1TXT6">Players have rights under GDPR, including data access and rectification, which can be exercised by contacting <span style="color: red;">nipuna.h.weeratunge@ntnu.no</span>.</li>
+                <li class="lang" key="INFO1TXT7">A more detailed Privacy Policy can be found <a href="gdpr.html" target="_blank">here</a>.</li>
+              </ul>
+              <button id="AcceptButton1" class="button" onclick="closeGDPRInfo()">Accept & Consent</button>
+              <a href="https://www.google.com/"><button id="DeclineButton1" class="button">Decline</button></a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Empty Player Name Error Popup -->
+      <div id="emptyPlayerNameErrorPopUp1" class="overlay" style="display:none;">
+        <div id="mywindow2" class="window infowindow">
+          <div class="window-content info-window-content">
+            <div class="window-header-error">
+              <p id="emptyPlayerInfoHeader"> Empty player name or player avatar! </p>
+            </div>
+            <div class="window-body">
+              <ul class="poptexts">
+                <li class="lang" key="INFO1TXT1">Enter your player name and select a player avatar to continue. </li>
+              </ul>
+              <button id="OkButton2" class="button" onmouseenter="playButtonHoverMusic()" onclick="closePlayerNameErrorInfo()">Ok</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Empty Player Role Error Popup -->
+      <div id="emptyPlayerRoleErrorPopUp1" class="overlay" style="display:none;">
+        <div id="mywindow3" class="window infowindow">
+          <div class="window-content info-window-content">
+            <div class="window-header-error">
+              <p> Empty player role! </p>
+            </div>
+            <div class="window-body">
+              <ul class="poptexts">
+                <li class="lang" key="INFO1TXT1">Select a Player Role to continue. </li>
+              </ul>
+              <button id="OkButton3" class="button" onmouseenter="playButtonHoverMusic()" onclick="closePlayerRoleErrorInfo()">Ok</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Invalid Player Name Error Popup -->
+      <div id="playerNameErrorPopUp1" class="overlay" style="display:none;">
+        <div id="mywindow5" class="window infowindow">
+          <div class="window-content info-window-content">
+            <div class="window-header-error">
+              <p id="invalidPlayerNameHeader"> Invalid player name! </p>
+            </div>
+            <div class="window-body">
+              <ul class="poptexts">
+                <li class="lang" key="INFO1TXT1">Please enter a valid player name to continue.</li>
+                <li class="lang" key="INFO1TXT2">The player name should only contain alphanumeric characters and should not contain spaces.</li>
+                <li class="lang" key="INFO1TXT3">The player name should be less than or equal to 15 characters.</li>
+              </ul>
+              <button id="OkButton5" class="button" onmouseenter="playButtonHoverMusic()" onclick="closeInvalidPlayerNameErrorInfo()">Ok</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Answer Description Popup -->
+      <div id="AnswerPopUp1" class="overlay" style="display:none;">
+        <div id="mywindow6" class="window infowindow">
+          <div class="window-content info-window-content">
+            <div class="window-header">
+              <p id="AnswerPopUpHeader"> Answer Description </p>
+            </div>
+            <div class="window-body">
+              <ul class="poptexts">
+                <li class="lang" id="ANSRTXT1" style='color:rgb(26, 247, 19);font-weight: bold;'></li>
+                <li class="lang" id="ANSRTXT2" style='font-weight: bold;'></li>
+                <li class="lang" id="ANSRTXT3" style='color:red;font-weight: bold;'></li>
+                <li class="lang" id="ANSRTXT4" style='font-weight: bold;'></li>
+              </ul>
+              <button id="OkButton6" class="button" onmouseenter="playButtonHoverMusic()" onclick="closeQuestionAnswerPopUp()">Ok</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Empty Answer Error Popup -->
+      <div id="emptyAnswerErrorPopUp1" class="overlay" style="display:none;">
+        <div id="mywindow7" class="window infowindow">
+          <div class="window-content info-window-content">
+            <div class="window-header-error">
+              <p id="emptyAnswerHeader"> Empty Answer! </p>
+            </div>
+            <div class="window-body">
+              <ul class="poptexts">
+                <li class="lang" key="INFO1TXT1">Please select at least one answer to continue.</li>
+              </ul>
+              <button id="OkButton7" class="button" onmouseenter="playButtonHoverMusic()" onclick="emptyAnswerErrorPopUpInfo()">Ok</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Interactivity Info Popup -->
+      <div id="interactivityInfoPopUp1" class="overlay" style="display:none;">
+        <div id="mywindow9" class="window infowindow">
+          <div class="window-content info-window-content">
+            <div class="window-header">
+              <p id="interactivityPopUpHeader"> You can interact with the game! </p>
+            </div>
+            <div class="window-body">
+              <ul class="poptexts">
+                <br>
+                <li class="lang" key="INFO1TXT1">You can enter the Simulator Zone by clicking the target icon, if it is visible.<img id="InteractivityButton3" class="interactivity-button" src="images/target.png"></li>
+                <li class="lang" key="INFO1TXT2">In the Simulator Zone, you can interact with the game elements to display some effects of XSS attacks.</li>
+                <li class="lang" key="INFO1TXT4">However, these interactions will not affect the score. </li>
+                <li class="lang" key="INFO1TXT5"> <span style="color: #f5b330">Remember, to select the question tiles at the bottom to answer the questions.</span> <div id="questionInfoTile1">
+                  <p id="questionTileText5" class="questionTileText">Use a VPN</p>
+                </div></li>
+                <li class="lang" key="INFO1TXT6"><span style="color: #f5b330"> Lastly, remember, there could be multiple answers for a question.</span></li>
+              </ul>
+              <button id="OkButton9" class="button" onmouseenter="playButtonHoverMusic()" onclick="closeinteractivityInfoPopUp()">Ok</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Simulator Zone Popup -->
+      <div id="interactivityZonePopUp1" class="overlay" style="display:none;">
+        <div id="mywindow10" class="window infowindow-simulator-zone">
+          <div class="window-content-simulator-zone info-window-content-simulator-zone">
+            <div class="window-header-simulator-zone">
+              <p> Simulator Zone </p>
+            </div>
+            <div class="window-body-simulator-zone">
+              <p id="simulatorInteractiveText1" class="simulatorInteractiveText"></p>
+              <p id="simulatorInteractiveText2" class="simulatorInteractiveText"></p>
+
+              <img id="questionImageContainerSimulatorZone1" class="questionImage"/> 
+              <img id="questionImageContainerSimulatorZone2" class="questionImage"/>
+
+              <img id="InteractivityBackButton1" class="interactivity-back-button" src="images/back.png" onmouseenter="playButtonHoverMusic()" onclick="startLevelInteractivity(100)">
+      
+              <div id="circleInteractiveButton1" class="circleInteractiveButton" onmouseenter="playButtonHoverMusic()" onclick="startLevelInteractivity(1)">
+                <p id="circleInteractiveText1" class="circleInteractiveText"></p>
+              </div>
+              
+              <div id="circleInteractiveButton2" class="circleInteractiveButton" onmouseenter="playButtonHoverMusic()" onclick="startLevelInteractivity(2)">
+                <p id="circleInteractiveText2" class="circleInteractiveText"></p>
+              </div>
+
+              <!-- XSS Attack Simulation Input -->
+              <input type="text" id="XSSCheckBoxAttackerReflected" name="XSSCheck" value="">
+              <button id="CheckButtonXSSAttackerReflected" class="button" onmouseenter="playButtonHoverMusic()" onclick="checkXSSAttack()">Check</button>  
+              <img id="DOMSimImage" src="">
+              <p id="sanitizedText">Test</p>
+
+              <img id="InteractivityArrowRight" class="interactivityArrow" src="images/right-arrow.png">
+              <img id="InteractivityArrowLeft" class="interactivityArrow" src="images/left-arrow.png">
+                      
+              <button id="ExitButton4" class="button" onmouseenter="playButtonHoverMusic()" onclick="closeSimulatorZone()">Return to Game</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- No Server Connectivity Popup -->
+      <div id="noServerConnectivityInfoPopUp1" class="overlay" style="display:none;">
+        <div id="mywindow11" class="window infowindow">
+          <div class="window-content info-window-content">
+            <div class="window-header">
+              <p> Can't connect with server! </p>
+            </div>
+            <div class="window-body">
+              <ul class="poptexts">
+                <li class="lang" key="INFO1TXT1">Please try again later.</li>
+                <li class="lang" key="INFO1TXT2"><span style="color: #f5b330">Don't refresh or close the web browser as this will delete and reset your answers.</span></li>
+              </ul>
+              <button id="OkButton10" class="button" onmouseenter="playButtonHoverMusic()" onclick="closeNoServerConnectivityInfoPopUp()">Ok</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Player Name and Avatar Selection UI -->
+      <div id="selectPlayerNameUI" style="display:none;">
+        <label id="playerAvatarHeading" for="playerAvatar">Select Player Avatar</label>
+        <label id="playerNameHeading" for="playerNameBox">Enter Player Name</label>
+        <input type="text" id="playerNameBox" name="playerNameBox" value="">
+  
+        <button id="AcceptButton2" class="button" onmouseenter="playButtonHoverMusic()" onclick="showPreGameQuestionnaireUI()">Confirm & Continue</button>
+        <a href="https://owasp.org/www-community/attacks/xss/" target="_blank"><button id="XSSResourcesButton2" class="button" onmouseenter="playButtonHoverMusic()" onclick="playButtonSelectMusic()">Extra XSS Resources</button></a>
+  
+        <!-- Avatar selection options -->
+        <img id="avatar0" class="playerAvatars" src="images/avatars/avatar0.png" onmouseenter="playButtonHoverMusic()" onclick="selectPlayerAvatar(0)"/>
+        <img id="avatar1" class="playerAvatars" src="images/avatars/avatar1.png" onmouseenter="playButtonHoverMusic()" onclick="selectPlayerAvatar(1)"/>
+        <img id="avatar2" class="playerAvatars" src="images/avatars/avatar2.png" onmouseenter="playButtonHoverMusic()" onclick="selectPlayerAvatar(2)"/>
+        <img id="avatar3" class="playerAvatars" src="images/avatars/avatar3.png" onmouseenter="playButtonHoverMusic()" onclick="selectPlayerAvatar(3)"/>
+        <img id="avatar4" class="playerAvatars" src="images/avatars/avatar4.png" onmouseenter="playButtonHoverMusic()" onclick="selectPlayerAvatar(4)"/>
+        <img id="avatar5" class="playerAvatars" src="images/avatars/avatar5.png" onmouseenter="playButtonHoverMusic()" onclick="selectPlayerAvatar(5)"/>
+
+        <img class="infobtn" src="images/info.png" onclick="displayInfo()"/> 
+
+        <audio id="startMenuMusic" src="music/startMenuMusic.mp3"></audio>
+        <img class="mutemusicbtn" src="images/mute.png" onclick="playStartMenuMusic()">
+        <img class="playmusicbtn" src="images/speaker.png" onclick="stopStartMenuMusic()">
+      </div>
+
+      <!-- Player Role Selection UI -->
+      <div id="selectPlayerRoleUI" style="display:none;">
+        <button id="ExitButton1" class="button" onmouseenter="playButtonHoverMusic()" onclick="showPostGameQuestionnaireUI()">Exit</button>
+        <a href="https://owasp.org/www-community/attacks/xss/" target="_blank"><button id="XSSResourcesButton4" class="button" onmouseenter="playButtonHoverMusic()" onclick="playButtonSelectMusic()">Extra XSS Resources</button></a>
+      
+        <label id="playerRoleHeading" for="playerRole">Select Player Role</label>
+
+        <label id="labelPlayerRoleAttacker" for="playerRoleavatar0">Attacker</label>
+        <label id="labelPlayerRoleDefender" for="playerRoleavatar1">Defender</label>
+        <label id="labelPlayerRoleUser" for="playerRoleavatar2">User</label>
+
+        <img id="playerRoleavatar0" class="playerRoleAvatars" src="images/avatars/attacker.png" onmouseenter="playButtonHoverMusic()" onclick="selectPlayerRole(0)"/>
+        <img id="playerRoleavatar1" class="playerRoleAvatars" src="images/avatars/defender.png" onmouseenter="playButtonHoverMusic()" onclick="selectPlayerRole(1)"/>
+        <img id="playerRoleavatar2" class="playerRoleAvatars" src="images/avatars/user.png" onmouseenter="playButtonHoverMusic()" onclick="selectPlayerRole(2)"/>
+      
+        <img class="infobtn" src="images/info.png" onclick="displayInfo()"/> 
+
+        <audio id="startMenuMusic" src="music/startMenuMusic.mp3"></audio>
+        <img class="mutemusicbtn" src="images/mute.png" onclick="playStartMenuMusic()">
+        <img class="playmusicbtn" src="images/speaker.png" onclick="stopStartMenuMusic()">
+      </div>
+
+      <!-- Pre-game Questionnaire UI -->
+      <div id="preGameQuestionnaireUI" style="display:none;">
+        <section class="wrapper">
+          <div class="content">
+            <div id="preGameQuestionnaire" class="gameQuestionnaire" style="text-align: left;white-space:inherit">
+              <button id="AcceptButton3" class="button" onmouseenter="playButtonHoverMusic()" onclick="showSelectPlayerRoleUI()">Confirm & Continue</button>
+              <button id="SkipPreQuestionnaire" class="button" onmouseenter="playButtonHoverMusic()" onclick="showSelectPlayerRoleUI()">Skip</button>
+              <a href="https://owasp.org/www-community/attacks/xss/" target="_blank"><button id="XSSResourcesButton3" class="button" onmouseenter="playButtonHoverMusic()" onclick="playButtonSelectMusic()">Extra XSS Resources</button></a>
+              <img class="infobtn" src="images/info.png" onclick="displayInfo()"/> 
+
+              <audio id="startMenuMusic" src="music/startMenuMusic.mp3"></audio>
+              <img class="mutemusicbtn" src="images/mute.png" onclick="playStartMenuMusic()">
+              <img class="playmusicbtn" src="images/speaker.png" onclick="stopStartMenuMusic()">
+              
+              <!-- Pre-game questionnaire content -->
+              <H2 CLASS="western">Pre-Game Questionnaire</H2>
+              <hr class="horizLine">
+              <H2 CLASS="internal" STYLE="margin-bottom: 1%; text-align: center;">Demographics & prior experience</H2>
+              <hr class="horizLine">
+
+              <!-- Gender selection -->
+              <H2 CLASS="internal" STYLE="margin-bottom: 1%">Gender:</H2>
+              <input type="radio" id="gender0Pre" class="radioButtonQuestionnaire" name="genderPre" value="female">
+              <label for="gender0Pre">Female</label><br>
+              <input type="radio" id="gender1Pre" class="radioButtonQuestionnaire" name="genderPre" value="male">
+              <label for="gender1Pre">Male</label><br>
+              <input type="radio" id="Pregender2Pre" class="radioButtonQuestionnaire" name="genderPre" value="gender prefer not to answer">
+              <label for="gender2Pre">Prefer not to answer</label><br>
+
+              <hr class="horizLine">
+
+              <!-- Previous gaming experience -->
+              <H2 CLASS="internal" STYLE="margin-bottom: 1%">Have you ever played digital games (any type)?</H2>
+              <input type="radio" id="prevPreGamingExperience0" class="radioButtonQuestionnaire" name="prevPreGamingExperience" value="Yes, frequently">
+              <label for="prevPreGamingExperience0">Yes, frequently</label><br>
+              <input type="radio" id="prevPreGamingExperience1" class="radioButtonQuestionnaire" name="prevPreGamingExperience" value="Sometimes">
+              <label for="prevPreGamingExperience1">Sometimes</label><br>
+              <input type="radio" id="prevPreGamingExperience2" class="radioButtonQuestionnaire" name="prevPreGamingExperience" value="Rarely">
+              <label for="prevPreGamingExperience2">Rarely</label><br>
+              <input type="radio" id="prevPreGamingExperience3" class="radioButtonQuestionnaire" name="prevPreGamingExperience" value="Never">
+              <label for="prevPreGamingExperience3">Never</label><br>
+
+              <hr class="horizLine">
+
+              <!-- Opinion on gaming -->
+              <H2 CLASS="internal" STYLE="margin-bottom: 1%">What are your thoughts and opinions on gaming?</H2>
+              <textarea id="opinionPreGaming" name="opinionPreGaming" rows="10" cols="100" style="margin-left: 1%;font-size: 1vw"></textarea>
+
+              <hr class="horizLine">
+
+              <!-- Previous cybersecurity games experience -->
+              <H2 CLASS="internal" STYLE="margin-bottom: 1%">What educational or cybersecurity-related games have you played before? Please state none or N/A if you haven't.</H2>
+              <textarea id="prevPreCSEduGames" name="prevPreCSEduGames" rows="10" cols="100" style="margin-left: 1%;font-size: 1vw"></textarea>
+              
+              <hr class="horizLine">
+              <H2 CLASS="internal" STYLE="margin-bottom: 1%; text-align: center;">Prior Knowledge</H2>
+              <hr class="horizLine">
+
+              <!-- Previous XSS knowledge -->
+              <H2 CLASS="internal" STYLE="margin-bottom: 1%">Have you previously studied Cross-Site Scripting (XSS)?</H2>
+              <input type="radio" id="prevXSS0" class="radioButtonQuestionnaire" name="prevPreXSSKnowledge" value="Yes, in detail">
+              <label for="prevXSS0">Yes, in detail</label><br>
+              <input type="radio" id="prevXSS1" class="radioButtonQuestionnaire" name="prevPreXSSKnowledge" value="Yes, but only at a basic level">
+              <label for="prevXSS1">Yes, but only at a basic level</label><br>
+              <input type="radio" id="prevXSS2" class="radioButtonQuestionnaire" name="prevPreXSSKnowledge" value="I have heard of it, but not studied">
+              <label for="prevXSS2">I have heard of it, but not studied</label><br>
+              <input type="radio" id="prevXSS3" class="radioButtonQuestionnaire" name="prevPreXSSKnowledge" value="No prior knowledge">
+              <label for="prevXSS3">No prior knowledge</label><br>
+              
+              <hr class="horizLine">
+
+              <!-- XSS Knowledge Quiz -->
+              <H2 CLASS="internal" STYLE="margin-bottom: 1%; text-align: center;">XSS Knowledge Quiz  <br>(Choose the best answer)</H2>
+              <hr class="horizLine">
+              
+              <!-- Quiz Question 1 -->
+              <H2 CLASS="internal" STYLE="margin-bottom: 1%">When an attacker tricks a user into clicking a link that immediately executes malicious code in their browser, which type of XSS is this?</H2>
+              <input type="radio" id="preXSSQuestionRisk0" class="radioButtonQuestionnaire" name="preXSSQuestion1" value="Stored">
+              <label for="preXSSQuestionRisk0">Stored</label><br>
+              <input type="radio" id="preXSSQuestionRisk1" class="radioButtonQuestionnaire" name="preXSSQuestion1" value="Reflected">
+              <label for="preXSSQuestionRisk1">Reflected</label><br>
+              <input type="radio" id="preXSSQuestionRisk2" class="radioButtonQuestionnaire" name="preXSSQuestion1" value="DOM-based">
+              <label for="preXSSQuestionRisk2">DOM-based</label><br>
+              <input type="radio" id="preXSSQuestionRisk3" class="radioButtonQuestionnaire" name="preXSSQuestion1" value="SQL Injection">
+              <label for="preXSSQuestionRisk3">SQL Injection</label><br>
+              <input type="radio" id="preXSSQuestionRisk4" class="radioButtonQuestionnaire" name="preXSSQuestion1" value="I don't know tag">
+              <label for="preXSSQuestionRisk4">I don't know</label><br>
+
+              <hr class="horizLine">
+
+              <!-- Quiz Question 2 -->
+              <H2 CLASS="internal" STYLE="margin-bottom: 1%">Which of the following prevents XSS attacks most effectively?</H2>
+              <input type="radio" id="preXSSQuestionPrevent0" class="radioButtonQuestionnaire" name="preXSSQuestion2" value="Input sanitization and output encoding">
+              <label for="preXSSQuestionPrevent0">Input sanitization and output encoding</label><br>
+              <input type="radio" id="preXSSQuestionPrevent1" class="radioButtonQuestionnaire" name="preXSSQuestion2" value="Using strong passwords">
+              <label for="preXSSQuestionPrevent1">Using strong passwords</label><br>
+              <input type="radio" id="preXSSQuestionPrevent2" class="radioButtonQuestionnaire" name="preXSSQuestion2" value="Installing antivirus software">
+              <label for="preXSSQuestionPrevent2">Installing antivirus software</label><br>
+              <input type="radio" id="preXSSQuestionPrevent3" class="radioButtonQuestionnaire" name="preXSSQuestion2" value="Disabling cookies">
+              <label for="preXSSQuestionPrevent3">Disabling cookies</label><br>
+              <input type="radio" id="preXSSQuestionPrevent4" class="radioButtonQuestionnaire" name="preXSSQuestion2" value="I don't know tag">
+              <label for="preXSSQuestionPrevent4">I don't know</label><br>
+
+              <hr class="horizLine">
+
+              <!-- Quiz Question 3 -->
+              <H2 CLASS="internal" STYLE="margin-bottom: 1%">Which type of XSS occurs when the attack is entirely executed in the browser without interacting with the server?</H2>
+              <input type="radio" id="preXSSQuestionReflected0" class="radioButtonQuestionnaire" name="preXSSQuestion3" value="Stored XSS">
+              <label for="preXSSQuestionReflected0">Stored XSS</label><br>
+              <input type="radio" id="preXSSQuestionReflected1" class="radioButtonQuestionnaire" name="preXSSQuestion3" value="Reflected XSS">
+              <label for="preXSSQuestionReflected1">Reflected XSS</label><br>
+              <input type="radio" id="preXSSQuestionReflected2" class="radioButtonQuestionnaire" name="preXSSQuestion3" value="DOM-based XSS">
+              <label for="preXSSQuestionReflected2">DOM-based XSS</label><br>
+              <input type="radio" id="preXSSQuestionReflected3" class="radioButtonQuestionnaire" name="preXSSQuestion3" value="SQL Injection">
+              <label for="preXSSQuestionReflected3">SQL Injection</label><br>
+              <input type="radio" id="preXSSQuestionReflected4" class="radioButtonQuestionnaire" name="preXSSQuestion3" value="I don't know tag">
+              <label for="preXSSQuestionReflected4">I don't know</label><br>
+
+              <hr class="horizLine">
+
+              <!-- Quiz Question 4 -->
+              <H2 CLASS="internal" STYLE="margin-bottom: 1%">What could be one of the main goals of an XSS attacker?</H2>
+              <input type="radio" id="preXSSQuestionScript0" class="radioButtonQuestionnaire" name="preXSSQuestion4" value="Steal session cookies or user credentials">
+              <label for="preXSSQuestionScript0">Steal session cookies or user credentials</label><br>
+              <input type="radio" id="preXSSQuestionScript1" class="radioButtonQuestionnaire" name="preXSSQuestion4" value="Overload the server with requests">
+              <label for="preXSSQuestionScript1">Overload the server with requests</label><br>
+              <input type="radio" id="preXSSQuestionScript2" class="radioButtonQuestionnaire" name="preXSSQuestion4" value="Encrypt files for ransom">
+              <label for="preXSSQuestionScript2">Encrypt files for ransom</label><br>
+              <input type="radio" id="preXSSQuestionScript3" class="radioButtonQuestionnaire" name="preXSSQuestion4" value="Redirect traffic to a new domain">
+              <label for="preXSSQuestionScript3">Redirect traffic to a new domain</label><br>
+              <input type="radio" id="preXSSQuestionScript4" class="radioButtonQuestionnaire" name="preXSSQuestion4" value="I don't know tag">
+              <label for="preXSSQuestionScript4">I don't know</label><br>
+
+              <hr class="horizLine">
+
+              <!-- Quiz Question 5 -->
+              <H2 CLASS="internal" STYLE="margin-bottom: 1%">Which coding practice is least effective against XSS?</H2>
+              <input type="radio" id="preXSSQuestionScriptWebsite0" class="radioButtonQuestionnaire" name="preXSSQuestion5" value="Escaping user input before rendering">
+              <label for="preXSSQuestionScriptWebsite0">Escaping user input before rendering</label><br>
+              <input type="radio" id="preXSSQuestionScriptWebsite1" class="radioButtonQuestionnaire" name="preXSSQuestion5" value="Using prepared SQL statements">
+              <label for="preXSSQuestionScriptWebsite1">Using prepared SQL statements</label><br>
+              <input type="radio" id="preXSSQuestionScriptWebsite2" class="radioButtonQuestionnaire" name="preXSSQuestion5" value="Validating user input">
+              <label for="preXSSQuestionScriptWebsite2">Validating user input</label><br>
+              <input type="radio" id="preXSSQuestionScriptWebsite3" class="radioButtonQuestionnaire" name="preXSSQuestion5" value="Applying Content Security Policy (CSP)">
+              <label for="preXSSQuestionScriptWebsite3">Applying Content Security Policy (CSP)</label><br>
+              <input type="radio" id="preXSSQuestionScriptWebsite4" class="radioButtonQuestionnaire" name="preXSSQuestion5" value="I don't know tag">
+              <label for="preXSSQuestionScriptWebsite4">I don't know</label><br>
+              <hr class="horizLine">
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- Post-game Questionnaire UI -->
+      <div id="postGameQuestionnaireUI" style="display:none;">
+        <section class="wrapper">
+          <div class="content">
+            <div id="postGameQuestionnaire" class="gameQuestionnaire" style="text-align: left;white-space:inherit">
+              <button id="AcceptButton3" class="button" onmouseenter="playButtonHoverMusic()" onclick="showExitGameUI()">Confirm & Continue</button>
+              <button id="SkipPostQuestionnaire" class="button" onmouseenter="playButtonHoverMusic()" onclick="showExitGameUI()">Skip</button>
+              <a href="https://owasp.org/www-community/attacks/xss/" target="_blank"><button id="XSSResourcesButton3" class="button" onmouseenter="playButtonHoverMusic()" onclick="playButtonSelectMusic()">Extra XSS Resources</button></a>
+              <img class="infobtn" src="images/info.png" onclick="displayInfo()"/> 
+
+              <audio id="startMenuMusic" src="music/startMenuMusic.mp3"></audio>
+              <img class="mutemusicbtn" src="images/mute.png" onclick="playStartMenuMusic()">
+              <img class="playmusicbtn" src="images/speaker.png" onclick="stopStartMenuMusic()">
+              
+              <!-- Post-game questionnaire content -->
+              <H2 CLASS="western">Post-Game Questionnaire</H2>
+              <hr class="horizLine">
+              
+              <H2 CLASS="internal" STYLE="margin-bottom: 0.14in; text-align: center;">XSS Knowledge <br> (Choose the best answer)</H2>
+              <hr class="horizLine">
+
+              <!-- Post-game Quiz Question 1 -->
+              <H2 CLASS="internal" STYLE="margin-bottom: 0.14in">Which of the following best describes Reflected XSS?</H2>
+              <input type="radio" id="postXSSUserInput0" class="radioButtonQuestionnaire" name="postXSSQuestion1" value="Malicious script stored permanently on the server">
+              <label for="postXSSUserInput0">Malicious script stored permanently on the server</label><br>
+              <input type="radio" id="postXSSUserInput1" class="radioButtonQuestionnaire" name="postXSSQuestion1" value="Script reflected via a URL/request and executed in the victim's browser">
+              <label for="postXSSUserInput1">Script reflected via a URL/request and executed in the victim's browser</label><br>
+              <input type="radio" id="postXSSUserInput2" class="radioButtonQuestionnaire" name="postXSSQuestion1" value="User input stored in a database and shown to all visitors">
+              <label for="postXSSUserInput2">User input stored in a database and shown to all visitors</label><br>
+              <input type="radio" id="postXSSUserInput3" class="radioButtonQuestionnaire" name="postXSSQuestion1" value="XSS caused by DOM manipulation on the client side">
+              <label for="postXSSUserInput3">XSS caused by DOM manipulation on the client side</label><br>
+              <input type="radio" id="postXSSUserInput4" class="radioButtonQuestionnaire" name="postXSSQuestion1" value="I don't know tag">
+              <label for="postXSSUserInput4">I don't know</label><br>
+
+              <hr class="horizLine">
+
+              <!-- Post-game Quiz Question 2 -->
+              <H2 CLASS="internal" STYLE="margin-bottom: 0.14in">What is the most reliable way to defend against XSS?</H2>
+              <input type="radio" id="postXSSDevelopersTag0" class="radioButtonQuestionnaire" name="postXSSQuestion2" value="Escape and sanitize user input before output">
+              <label for="postXSSDevelopersTag0">Escape and sanitize user input before output</label><br>
+              <input type="radio" id="postXSSDevelopersTag1" class="radioButtonQuestionnaire" name="postXSSQuestion2" value="Use a firewall">
+              <label for="postXSSDevelopersTag1">Use a firewall</label><br>
+              <input type="radio" id="postXSSDevelopersTag2" class="radioButtonQuestionnaire" name="postXSSQuestion2" value="Disable JavaScript in browsers">
+              <label for="postXSSDevelopersTag2">Disable JavaScript in browsers</label><br>
+              <input type="radio" id="postXSSDevelopersTag3" class="radioButtonQuestionnaire" name="postXSSQuestion2" value="Install antivirus software">
+              <label for="postXSSDevelopersTag3">Install antivirus software</label><br>
+              <input type="radio" id="postXSSDevelopersTag4" class="radioButtonQuestionnaire" name="postXSSQuestion2" value="I don't know tag">
+              <label for="postXSSDevelopersTag4">I don't know</label><br>
+
+              <hr class="horizLine">
+
+              <!-- Post-game Quiz Question 3 -->
+              <H2 CLASS="internal" STYLE="margin-bottom: 0.14in">Which XSS type happens entirely within the browser's DOM, without needing a server request?</H2>
+              <input type="radio" id="postXSSHarm0" class="radioButtonQuestionnaire" name="postXSSQuestion3" value="Stored XSS">
+              <label for="postXSSHarm0">Stored XSS</label><br>
+              <input type="radio" id="postXSSHarm1" class="radioButtonQuestionnaire" name="postXSSQuestion3" value="Reflected XSS">
+              <label for="postXSSHarm1">Reflected XSS</label><br>
+              <input type="radio" id="postXSSHarm2" class="radioButtonQuestionnaire" name="postXSSQuestion3" value="DOM-based XSS">
+              <label for="postXSSHarm2">DOM-based XSS</label><br>
+              <input type="radio" id="postXSSHarm3" class="radioButtonQuestionnaire" name="postXSSQuestion3" value="Session Hijacking">
+              <label for="postXSSHarm3">Session Hijacking</label><br>
+              <input type="radio" id="postXSSHarm4" class="radioButtonQuestionnaire" name="postXSSQuestion3" value="I don't know tag">
+              <label for="postXSSHarm4">I don't know</label><br>
+
+              <hr class="horizLine">
+
+              <!-- Post-game Quiz Question 4 -->
+              <H2 CLASS="internal" STYLE="margin-bottom: 0.14in">What do attackers often try to gain with an XSS attack?</H2>
+              <input type="radio" id="postXSSUserInput0" class="radioButtonQuestionnaire" name="postXSSQuestion4" value="Access to session cookies or sensitive data">
+              <label for="postXSSUserInput0">Access to session cookies or sensitive data</label><br>
+              <input type="radio" id="postXSSUserInput1" class="radioButtonQuestionnaire" name="postXSSQuestion4" value="Extra processing power">
+              <label for="postXSSUserInput1">Extra processing power</label><br>
+              <input type="radio" id="postXSSUserInput2" class="radioButtonQuestionnaire" name="postXSSQuestion4" value="Control over the database schema">
+              <label for="postXSSUserInput2">Control over the database schema</label><br>
+              <input type="radio" id="postXSSUserInput3" class="radioButtonQuestionnaire" name="postXSSQuestion4" value="Faster website performance">
+              <label for="postXSSUserInput3">Faster website performance</label><br>
+              <input type="radio" id="postXSSUserInput4" class="radioButtonQuestionnaire" name="postXSSQuestion4" value="I don't know tag">
+              <label for="postXSSUserInput4">I don't know</label><br>
+
+              <hr class="horizLine">
+
+              <!-- Post-game Quiz Question 5 -->
+              <H2 CLASS="internal" STYLE="margin-bottom: 0.14in">Which measure is least useful for preventing XSS?</H2>
+              <input type="radio" id="postXSSScriptTag0" class="radioButtonQuestionnaire" name="postXSSQuestion5" value="Escaping untrusted data">
+              <label for="postXSSScriptTag0">Escaping untrusted data</label><br>
+              <input type="radio" id="postXSSScriptTag1" class="radioButtonQuestionnaire" name="postXSSQuestion5" value="Enforcing CSP rules">
+              <label for="postXSSScriptTag1">Enforcing CSP rules</label><br>
+              <input type="radio" id="postXSSScriptTag2" class="radioButtonQuestionnaire" name="postXSSQuestion5" value="Strong password policies">
+              <label for="postXSSScriptTag2">Strong password policies</label><br>
+              <input type="radio" id="postXSSScriptTag3" class="radioButtonQuestionnaire" name="postXSSQuestion5" value="Input validation">
+              <label for="postXSSScriptTag3">Input validation</label><br>
+              <input type="radio" id="postXSSScriptTag4" class="radioButtonQuestionnaire" name="postXSSQuestion5" value="I don't know tag">
+              <label for="postXSSScriptTag4">I don't know</label><br>
+
+              <hr class="horizLine">
+
+              <!-- Self-rated XSS knowledge section -->
+              <H2 CLASS="internal" STYLE="margin-bottom: 0.14in; text-align: center;">Self-rated XSS knowledge<br>(Rate from 1 - Strongly Disagree to 5 - Strongly Agree)</H2>
+              <hr class="horizLine">
+
+              <!-- Likert scale questions for self-rated knowledge -->
+              <H2 CLASS="internal" STYLE="margin-bottom: 0.14in">I now understand the different types of XSS. </H2>
+              <form action="">
+                <ul class="likert">
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssPostKnowledgeLikert1" value="1" /><label>Strongly Disagree</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssPostKnowledgeLikert1" value="2" /><label>Disagree</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssPostKnowledgeLikert1" value="3" /><label>Neutral</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssPostKnowledgeLikert1" value="4" /><label>Agree</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssPostKnowledgeLikert1" value="5" /><label>Strongly Agree</label></li>
+                </ul>
+              </form>
+
+              <hr class="horizLine">
+
+              <H2 CLASS="internal" STYLE="margin-bottom: 0.14in">I feel confident identifying XSS vulnerabilities in code. </H2>
+              <form action="">
+                <ul class="likert">
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssPostKnowledgeLikert2" value="1" /><label>Strongly Disagree</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssPostKnowledgeLikert2" value="2" /><label>Disagree</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssPostKnowledgeLikert2" value="3" /><label>Neutral</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssPostKnowledgeLikert2" value="4" /><label>Agree</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssPostKnowledgeLikert2" value="5" /><label>Strongly Agree</label></li>
+                </ul>
+              </form>
+
+              <hr class="horizLine">
+
+              <H2 CLASS="internal" STYLE="margin-bottom: 0.14in">I know how to apply defenses against XSS. </H2>
+              <form action="">
+                <ul class="likert">
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssPostKnowledgeLikert3" value="1" /><label>Strongly Disagree</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssPostKnowledgeLikert3" value="2" /><label>Disagree</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssPostKnowledgeLikert3" value="3" /><label>Neutral</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssPostKnowledgeLikert3" value="4" /><label>Agree</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssPostKnowledgeLikert3" value="5" /><label>Strongly Agree</label></li>
+                </ul>
+              </form>
+
+              <hr class="horizLine">
+
+              <!-- Engagement & Motivation section -->
+              <H2 CLASS="internal" STYLE="margin-bottom: 0.14in; text-align: center;">Engagement & Motivation<br>(Rate from 1 - Strongly Disagree to 5 - Strongly Agree)</H2>
+              <hr class="horizLine">
+
+              <!-- Engagement Likert scale questions -->
+              <H2 CLASS="internal" STYLE="margin-bottom: 0.14in">The game experience kept me interested in the topic. </H2>
+              <form action="">
+                <ul class="likert">
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssEngMotivationLikert1" value="1" /><label>Strongly Disagree</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssEngMotivationLikert1" value="2" /><label>Disagree</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssEngMotivationLikert1" value="3" /><label>Neutral</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssEngMotivationLikert1" value="4" /><label>Agree</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssEngMotivationLikert1" value="5" /><label>Strongly Agree</label></li>
+                </ul>
+              </form>
+
+              <hr class="horizLine">
+
+              <H2 CLASS="internal" STYLE="margin-bottom: 0.14in">Switching between attacker, defender, and user roles made the learning experience more engaging. </H2>
+              <form action="">
+                <ul class="likert">
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssEngMotivationLikert2" value="1" /><label>Strongly Disagree</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssEngMotivationLikert2" value="2" /><label>Disagree</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssEngMotivationLikert2" value="3" /><label>Neutral</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssEngMotivationLikert2" value="4" /><label>Agree</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssEngMotivationLikert2" value="5" /><label>Strongly Agree</label></li>
+                </ul>
+              </form>
+
+              <hr class="horizLine">
+
+              <H2 CLASS="internal" STYLE="margin-bottom: 0.14in">The difficulty of the game matched my skill level. </H2>
+              <form action="">
+                <ul class="likert">
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssEngMotivationLikert3" value="1" /><label>Strongly Disagree</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssEngMotivationLikert3" value="2" /><label>Disagree</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssEngMotivationLikert3" value="3" /><label>Neutral</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssEngMotivationLikert3" value="4" /><label>Agree</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssEngMotivationLikert3" value="5" /><label>Strongly Agree</label></li>
+                </ul>
+              </form>
+
+              <hr class="horizLine">
+
+              <H2 CLASS="internal" STYLE="margin-bottom: 0.14in">I would prefer more InfoSec topics to be taught using games. </H2>
+              <form action="">
+                <ul class="likert">
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssEngMotivationLikert4" value="1" /><label>Strongly Disagree</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssEngMotivationLikert4" value="2" /><label>Disagree</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssEngMotivationLikert4" value="3" /><label>Neutral</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssEngMotivationLikert4" value="4" /><label>Agree</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssEngMotivationLikert4" value="5" /><label>Strongly Agree</label></li>
+                </ul>
+              </form>
+
+              <hr class="horizLine">
+
+              <!-- Cognitive Load section -->
+              <H2 CLASS="internal" STYLE="margin-bottom: 0.14in; text-align: center;">Cognitive load <br>(Rate from 1 - Very Low to 5 - Very High)</H2>
+              <hr class="horizLine">
+
+              <!-- Cognitive Load Likert scale questions -->
+              <H2 CLASS="internal" STYLE="margin-bottom: 0.14in">The mental effort required to complete the game was: </H2>
+              <form action="">
+                <ul class="likert">
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssCogLoadLikert1" value="1" /><label>Very Low</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssCogLoadLikert1" value="2" /><label>Low</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssCogLoadLikert1" value="3" /><label>Moderate</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssCogLoadLikert1" value="4" /><label>High</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssCogLoadLikert1" value="5" /><label>Very High</label></li>
+                </ul>
+              </form>
+
+              <hr class="horizLine">
+
+              <H2 CLASS="internal" STYLE="margin-bottom: 0.14in">The level of frustration I experienced while trying to understand XSS concepts through the game was: </H2>
+              <form action="">
+                <ul class="likert">
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssCogLoadLikert2" value="1" /><label>Very Low</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssCogLoadLikert2" value="2" /><label>Low</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssCogLoadLikert2" value="3" /><label>Moderate</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssCogLoadLikert2" value="4" /><label>High</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssCogLoadLikert2" value="5" /><label>Very High</label></li>
+                </ul>
+              </form>
+
+              <hr class="horizLine">
+
+              <H2 CLASS="internal" STYLE="margin-bottom: 0.14in">The amount of concentration needed to complete game tasks were:  </H2>
+              <form action="">
+                <ul class="likert">
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssCogLoadLikert3" value="1" /><label>Very Low</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssCogLoadLikert3" value="2" /><label>Low</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssCogLoadLikert3" value="3" /><label>Moderate</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssCogLoadLikert3" value="4" /><label>High</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssCogLoadLikert3" value="5" /><label>Very High</label></li>
+                </ul>
+              </form>
+
+              <hr class="horizLine">
+
+              <H2 CLASS="internal" STYLE="margin-bottom: 0.14in">The time demand needed to complete the game was:  </H2>
+              <form action="">
+                <ul class="likert">
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssCogLoadLikert4" value="1" /><label>Very Low</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssCogLoadLikert4" value="2" /><label>Low</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssCogLoadLikert4" value="3" /><label>Moderate</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssCogLoadLikert4" value="4" /><label>High</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssCogLoadLikert4" value="5" /><label>Very High</label></li>
+                </ul>
+              </form>
+
+              <hr class="horizLine">
+
+              <!-- Game Elements & Feedback section -->
+              <H2 CLASS="internal" STYLE="margin-bottom: 0.14in; text-align: center;">Game Elements & Feedback<br>(Rate from 1 - Strongly Disagree to 5 - Strongly Agree)</H2>
+              <hr class="horizLine">
+
+              <!-- Game Elements Likert scale questions -->
+              <H2 CLASS="internal" STYLE="margin-bottom: 0.14in">Multi-role design helped me learn about XSS from multiple perspectives. </H2>
+              <form action="">
+                <ul class="likert">
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssUIUXLikert1" value="1" /><label>Strongly Disagree</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssUIUXLikert1" value="2" /><label>Disagree</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssUIUXLikert1" value="3" /><label>Neutral</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssUIUXLikert1" value="4" /><label>Agree</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssUIUXLikert1" value="5" /><label>Strongly Agree</label></li>
+                </ul>
+              </form>
+
+              <hr class="horizLine">
+
+              <H2 CLASS="internal" STYLE="margin-bottom: 0.14in">Multi-opposing-role playing contributed to a deeper learning of XSS. </H2>
+              <form action="">
+                <ul class="likert">
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssUIUXLikert2" value="1" /><label>Strongly Disagree</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssUIUXLikert2" value="2" /><label>Disagree</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssUIUXLikert2" value="3" /><label>Neutral</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssUIUXLikert2" value="4" /><label>Agree</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssUIUXLikert2" value="5" /><label>Strongly Agree</label></li>
+                </ul>
+              </form>
+
+              <hr class="horizLine">
+
+              <H2 CLASS="internal" STYLE="margin-bottom: 0.14in">The Simulation Zone was useful for applying knowledge related to XSS practically. </H2>
+              <form action="">
+                <ul class="likert">
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssUIUXLikert3" value="1" /><label>Strongly Disagree</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssUIUXLikert3" value="2" /><label>Disagree</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssUIUXLikert3" value="3" /><label>Neutral</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssUIUXLikert3" value="4" /><label>Agree</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssUIUXLikert3" value="5" /><label>Strongly Agree</label></li>
+                </ul>
+              </form>
+
+              <hr class="horizLine">
+
+              <H2 CLASS="internal" STYLE="margin-bottom: 0.14in">The statboard helped me monitor my progress. </H2>
+              <form action="">
+                <ul class="likert">
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssUIUXLikert4" value="1" /><label>Strongly Disagree</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssUIUXLikert4" value="2" /><label>Disagree</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssUIUXLikert4" value="3" /><label>Neutral</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssUIUXLikert4" value="4" /><label>Agree</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssUIUXLikert4" value="5" /><label>Strongly Agree</label></li>
+                </ul>
+              </form>
+
+              <hr class="horizLine">
+
+              <H2 CLASS="internal" STYLE="margin-bottom: 0.14in">The statboard motivated me to improve. </H2>
+              <form action="">
+                <ul class="likert">
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssUIUXLikert5" value="1" /><label>Strongly Disagree</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssUIUXLikert5" value="2" /><label>Disagree</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssUIUXLikert5" value="3" /><label>Neutral</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssUIUXLikert5" value="4" /><label>Agree</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssUIUXLikert5" value="5" /><label>Strongly Agree</label></li>
+                </ul>
+              </form>
+
+              <hr class="horizLine">
+
+              <H2 CLASS="internal" STYLE="margin-bottom: 0.14in">In-game feedback helped me identify mistakes. </H2>
+              <form action="">
+                <ul class="likert">
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssUIUXLikert6" value="1" /><label>Strongly Disagree</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssUIUXLikert6" value="2" /><label>Disagree</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssUIUXLikert6" value="3" /><label>Neutral</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssUIUXLikert6" value="4" /><label>Agree</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssUIUXLikert6" value="5" /><label>Strongly Agree</label></li>
+                </ul>
+              </form>
+
+              <hr class="horizLine">
+
+              <H2 CLASS="internal" STYLE="margin-bottom: 0.14in">In-game feedback improved my understanding of the concepts. </H2>
+              <form action="">
+                <ul class="likert">
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssUIUXLikert7" value="1" /><label>Strongly Disagree</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssUIUXLikert7" value="2" /><label>Disagree</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssUIUXLikert7" value="3" /><label>Neutral</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssUIUXLikert7" value="4" /><label>Agree</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssUIUXLikert7" value="5" /><label>Strongly Agree</label></li>
+                </ul>
+              </form>
+
+              <hr class="horizLine">
+
+              <!-- Perceived Transfer & Application section -->
+              <H2 CLASS="internal" STYLE="margin-bottom: 0.14in; text-align: center;">Perceived Transfer & Application<br>(Rate from 1 - Strongly Disagree to 5 - Strongly Agree)</H2>
+              <hr class="horizLine">
+
+              <!-- Transfer & Application Likert scale questions -->
+              <H2 CLASS="internal" STYLE="margin-bottom: 0.14in">I feel more capable of applying XSS prevention in real-world coding. </H2>
+              <form action="">
+                <ul class="likert">
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssPTRAppLikert1" value="1" /><label>Strongly Disagree</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssPTRAppLikert1" value="2" /><label>Disagree</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssPTRAppLikert1" value="3" /><label>Neutral</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssPTRAppLikert1" value="4" /><label>Agree</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssPTRAppLikert1" value="5" /><label>Strongly Agree</label></li>
+                </ul>
+              </form>
+
+              <hr class="horizLine">
+
+              <H2 CLASS="internal" STYLE="margin-bottom: 0.14in">The concepts and skills I learned from this game can help me in my coursework.  </H2>
+              <form action="">
+                <ul class="likert">
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssPTRAppLikert2" value="1" /><label>Strongly Disagree</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssPTRAppLikert2" value="2" /><label>Disagree</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssPTRAppLikert2" value="3" /><label>Neutral</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssPTRAppLikert2" value="4" /><label>Agree</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssPTRAppLikert2" value="5" /><label>Strongly Agree</label></li>
+                </ul>
+              </form>
+
+              <hr class="horizLine">
+
+              <H2 CLASS="internal" STYLE="margin-bottom: 0.14in">The knowledge gained from this game could guide how I handle cybersecurity tasks in a professional setting. </H2>
+              <form action="">
+                <ul class="likert">
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssPTRAppLikert3" value="1" /><label>Strongly Disagree</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssPTRAppLikert3" value="2" /><label>Disagree</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssPTRAppLikert3" value="3" /><label>Neutral</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssPTRAppLikert3" value="4" /><label>Agree</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssPTRAppLikert3" value="5" /><label>Strongly Agree</label></li>
+                </ul>
+              </form>
+
+              <hr class="horizLine">
+
+              <H2 CLASS="internal" STYLE="margin-bottom: 0.14in">I believe using game-based learning like TXG could help my classmates or peers become more aware of cybersecurity risks and strategies. </H2>
+              <form action="">
+                <ul class="likert">
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssPTRAppLikert4" value="1" /><label>Strongly Disagree</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssPTRAppLikert4" value="2" /><label>Disagree</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssPTRAppLikert4" value="3" /><label>Neutral</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssPTRAppLikert4" value="4" /><label>Agree</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssPTRAppLikert4" value="5" /><label>Strongly Agree</label></li>
+                </ul>
+              </form>
+
+              <hr class="horizLine">
+
+              <H2 CLASS="internal" STYLE="margin-bottom: 0.14in">I believe using game-based learning like TXG in a professional setting could enhance the team's practical cybersecurity skills.</H2>
+              <form action="">
+                <ul class="likert">
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssPTRAppLikert5" value="1" /><label>Strongly Disagree</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssPTRAppLikert5" value="2" /><label>Disagree</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssPTRAppLikert5" value="3" /><label>Neutral</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssPTRAppLikert5" value="4" /><label>Agree</label></li>
+                  <li><input type="radio" class="radioButtonQuestionnaire1" name="xssPTRAppLikert5" value="5" /><label>Strongly Agree</label></li>
+                </ul>
+              </form>
+
+              <hr class="horizLine">
+
+              <!-- Open-ended Feedback section -->
+              <H2 CLASS="internal" STYLE="margin-bottom: 0.14in; text-align: center;">Open-ended Feedback</H2>
+              <H2 CLASS="internal" STYLE="margin-bottom: 0.14in">What aspects of the game did you enjoy most?</H2>
+              <textarea id="TXGliked" name="TXGliked" rows="10" cols="100" style="font-size: 16pt"></textarea>
+              <hr class="horizLine">
+
+              <H2 CLASS="internal" STYLE="margin-bottom: 0.14in">What could be improved?</H2>
+              <textarea id="TXGimproved" name="TXGimproved" rows="10" cols="100" style="font-size: 16pt"></textarea>
+              <hr class="horizLine">
+
+              <H2 CLASS="internal" STYLE="margin-bottom: 0.14in">How do you see such gamified tools fitting into university or industry training?</H2>
+              <textarea id="TXGUniIndustry" name="TXGUniIndustry" rows="10" cols="100" style="font-size: 16pt"></textarea>
+              <hr class="horizLine">
+
+              <H2 CLASS="internal" STYLE="margin-bottom: 0.14in">Any other comments or ideas?</H2>
+              <textarea id="TXGcomments" name="TXGcomments" rows="10" cols="100" style="font-size: 16pt"></textarea>
+              <hr class="horizLine">
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- Level Gameplay UI -->
+      <div id="levelUI" style="display:none;">
+        <a href="https://owasp.org/www-community/attacks/xss/" target="_blank"><button id="XSSResourcesButton5" class="button" onmouseenter="playButtonHoverMusic()" onclick="playButtonSelectMusic()">Extra XSS Resources</button></a>
+        
+        <!-- Simulator Zone access button -->
+        <img id="InteractivityButton1" class="interactivity-button" src="images/target.png" onmouseenter="playButtonHoverMusic()" onclick="startLevelInteractivity()">
+
+        <!-- Level timer display -->
+        <div><span id="levelTimer"></span> </div>
+        <p id="questionHeadingContainer" class="questionHeading"></p>
+
+        <!-- Mini player statboard -->
+        <div id="playerstatboard-mini">
+          <img id="attackerRoleCompletedBadgeMini" src="images/badges/Attacker-Completed.png" />
+          <img id="defenderRoleCompletedBadgeMini" src="images/badges/Defender-Completed.png" />
+          <img id="userRoleCompletedBadgeMini" src="images/badges/User-Completed.png" />
+          <img id="simZoneCompletedBadgeMini" src="images/badges/Sim-Zone.png" />
+          <img id="playerStatboard-Extended" src="images/bar-graph.png" onmouseenter="playButtonHoverMusic()" onclick="openPlayerStatsZone('Ingame-Level')">
+          <p class="playerNameInGame"></p>
+          <p id="playerBatchText">Badges</p>
+          <div><span id="playerScoreInGame">0</span> </div>
+          <p id="playerScoreContainer" style="position:fixed;top:15%;">Score :</p> 
+          <img class="playerAvatarInGame"/>
+          <p id="questionTextContainer1"></p> 
+          <p id="badgeText"></p>
+          <p id="game_progress_text" class="statboardText">Game progress</p>
+   
+          <!-- Progress visualization -->
+          <div id="fluid-meter"></div>
+          <div id="progress-bar-skills">
+            <div>
+              <p id="Ref-XSS-Skills">Reflected XSS Skills</p>
+              <p id="Ref-XSS-Skills-Value">0</p>
+              <progress id='video-progress-Ref-XSS' class="progress-bar-Ref-skills" min='0' max='100' value='0'></progress>
+            </div>
+
+            <div>
+              <p id="Stored-XSS-Skills">Stored XSS Skills</p>
+              <p id="Stored-XSS-Skills-Value">0</p>
+              <progress id='video-progress-Stored-XSS' class="progress-bar-Stored-skills" min='0' max='100' value='0'></progress>
+            </div>
+
+            <div>
+              <p id="DOM-based-XSS-Skills">DOM based XSS Skills</p>
+              <p id="DOM-based-XSS-Skills-Value">0</p>
+              <progress id='video-progress-DOM-based-XSS' class="progress-bar-DOM-skills" min='0' max='100' value='0'></progress>
+            </div>
+
+            <div>
+              <p id="Sim-Zone-Skills">Simulation Zone Skills</p>
+              <p id="Sim-Zone-Skills-Value">0</p>
+              <progress id='video-progress-Sim-Zone-Skills-Progress' class="progress-bar-Overall-skills" min='0' max='100' value='0'></progress>
+            </div>
+          </div>
+        </div>
+
+        <!-- Question content area -->
+        <img id="questionImageContainer" class="questionImage"/> 
+        <p id="questionTextContainer" class="questionText"></p>
+
+        <!-- Level indicator graphics -->
+        <img id="level1gif" class="levelgifs" src="images/Level-1.gif" />
+        <img id="level2gif" class="levelgifs" src="images/Level-2.gif" />
+        <img id="level3gif" class="levelgifs" src="images/Level-3.gif" />
+
+        <!-- Answer selection tiles -->
+        <div id="question1Tile" class="questionTile" onmouseenter="playButtonHoverMusic()" onclick="selectAnswerTile(1)">
+          <p id="questionTileText1" class="questionTileText"></p>
+        </div>
+
+        <div id="question2Tile" class="questionTile" onmouseenter="playButtonHoverMusic()" onclick="selectAnswerTile(2)">
+          <p id="questionTileText2" class="questionTileText"></p>
+        </div>
+
+        <div id="question3Tile" class="questionTile" onmouseenter="playButtonHoverMusic()" onclick="selectAnswerTile(3)">
+          <p id="questionTileText3" class="questionTileText"></p>
+        </div>
+
+        <div id="question4Tile" class="questionTile" onmouseenter="playButtonHoverMusic()" onclick="selectAnswerTile(4)">
+          <p id="questionTileText4" class="questionTileText"></p>
+        </div>
+
+        <!-- Game controls -->
+        <img class="infobtn" src="images/info.png" onclick="displayInfo()"/> 
+
+        <audio id="startMenuMusic" src="music/startMenuMusic.mp3"></audio>
+        <img class="mutemusicbtn" src="images/mute.png" onclick="playStartMenuMusic()">
+        <img class="playmusicbtn" src="images/speaker.png" onclick="stopStartMenuMusic()">
+
+        <button id="AcceptButton5" class="button" onmouseenter="playButtonHoverMusic()" onclick="submitQuestionAnswers()">Continue</button>
+      </div>
+
+      <!-- Exit Game Confirmation UI -->
+      <div id="exitGameUI" style="display:none;">
+        <a href="https://www.google.com/" target="_self"><button id="ExitButton2" class="button" onmouseenter="playButtonHoverMusic()" onclick="playButtonSelectMusic()">Exit</button></a>
+        <a href="https://owasp.org/www-community/attacks/xss/" target="_blank"><button id="XSSResourcesButton6" class="button" onmouseenter="playButtonHoverMusic()" onclick="playButtonSelectMusic()">Extra XSS Resources</button></a>
+      
+        <p id="gameExitTextContainer" class="gameExitText"><br> Thank you <span id='endSessionPlayerConfirmation' style='color: #0df27e;'></span> for taking part in The XSS Game!</p>
+        <img class="infobtn" src="images/info.png" onclick="displayInfo()"/> 
+
+        <audio id="startMenuMusic" src="music/startMenuMusic.mp3"></audio>
+        <img class="mutemusicbtn" src="images/mute.png" onclick="playStartMenuMusic()">
+        <img class="playmusicbtn" src="images/speaker.png" onclick="stopStartMenuMusic()">
+      </div>
+
+      <!-- Leaderboard UI -->
+      <div id="leaderboardUI" style="display:none;">
+        <a href="https://owasp.org/www-community/attacks/xss/" target="_blank"><button id="XSSResourcesButton6" class="button" onmouseenter="playButtonHoverMusic()" onclick="playButtonSelectMusic()">Extra XSS Resources</button></a>
+        <button id="ExitButton3" class="button" onmouseenter="playButtonHoverMusic()" onclick="showMainMenu()">Back to Main Menu</button>
+
+        <p class="questionHeading">Leaderboard</p>
+        <div id="scorableTable">
+          <div id="table-container"></div> 
+        </div>
+   
+        <img class="infobtn" src="images/info.png" onclick="displayInfo()"/>
+        <audio id="startMenuMusic" src="music/startMenuMusic.mp3"></audio>
+        <img class="mutemusicbtn" src="images/mute.png" onclick="playStartMenuMusic()">
+        <img class="playmusicbtn" src="images/speaker.png" onclick="stopStartMenuMusic()">
+      </div>
+
+      <!-- In-game Player Stats Popup -->
+      <div id="playerStatsPopUp" class="overlay" style="display:none;">
+        <div id="mywindow10" class="window infowindow-ingame-statbook">
+          <div class="window-content-ingame-statbook info-window-content-ingame-statbook">
+            <div class="window-header-ingame-statbook">
+              <p id="playerStatsHeader"> Player Stats</p>
+            </div>
+            <div class="window-body-ingame-statbook">
+              <p id="playerNameInGame-statboard" class="playerNameInGame" style="position:fixed;top:7%;z-index:1;"></p>
+              <div><span id="playerScoreInGame-statboard" style="position:fixed;top:29%;z-index:1;">0</span> </div>
+              <p id="playerScoreContainer-statboard" style="position:fixed;top:24%;z-index:1;">Score :</p> 
+              <img id="playerAvatarInGame-statboard" class="playerAvatarInGame" style="position:fixed;top:14%;z-index:1;" />
+              <p id="badge-text" class="statboardText" style="position:fixed;top:45%;right:10%;z-index:1;font-size: 1.2vw;font-weight: bold;">Badges</p>
+              <p id="game_progress_text-statboard" class="statboardText">Game progress</p>
+
+              <div id="fluid-meter-statboard"></div>
+      
+              <div id="player-stat-tabs">
+                <!-- Role selection tabs -->
+                <button id="overallTabSelected" class="tabbutton" style="top:9%;left:1%;" onclick="tabSelected('Overall')">Overall</button>
+                <button id="attackerTabSelected" class="tabbutton tabbutton2" style="top:9%;left:7%;" onclick="tabSelected('Attacker')">Attacker</button>
+                <button id="defenderTabSelected" class="tabbutton tabbutton3" style="top:9%;left:13%;" onclick="tabSelected('Defender')">Defender</button>
+                <button id="userTabSelected" class="tabbutton tabbutton4" style="top:9%;left:19%;" onclick="tabSelected('User')">User</button>
+
+                <!-- Badges display -->
+                <div id="playerstatboard-badge-box">
+                  <img id="attackerRoleCompletedBadge" src="images/badges/Attacker-Completed.png" />
+                  <img id="defenderRoleCompletedBadge" src="images/badges/Defender-Completed.png" />
+                  <img id="userRoleCompletedBadge" src="images/badges/User-Completed.png" />
+                  <img id="simZoneCompletedBadge" src="images/badges/Sim-Zone.png" />
+                </div>
+
+                <img id="tabImage" src="images/badges/overall-skills.png" />
+
+                <p id="role-briefing-text">Role Briefing</p>
+
+                <!-- Skills and feedback sections -->
+                <div id="playerstatboard-skills-affirmative-box">
+                  <p id="playerstatboard-skills-affirmative-box-text"></p>
+                </div>
+
+                <div id="playerstatboard-skills-feedback-box"></div>
+
+                <div id="playerstatboard-feedback-box">
+                  <p id="playerstatboard-feedback-box-text"></p>
+                </div>
+        
+                <div id="playerstatboard-skills-box">
+                  <div id="progress-bar-skills-stat-board">
+                    <div>
+                      <p id="progress-bar-Ref-skills-value-statboard">Reflected XSS Skills</p>
+                      <p id="Ref-XSS-Skills-Value-stat-board">0</p>
+                      <progress id='video-progress-Ref-XSS-overall-statboard' class="progress-bar-Ref-skills" min='0' max='100' value='0'></progress>
+                    </div>
+  
+                    <div>
+                      <p id="Stored-XSS-Skills-stat-board">Stored XSS Skills</p>
+                      <p id="Stored-XSS-Skills-Value-stat-board">0</p>
+                      <progress id='video-progress-Stored-XSS-stat-board' class="progress-bar-Stored-skills" min='0' max='100' value='0'></progress>
+                    </div>
+  
+                    <div>
+                      <p id="DOM-based-XSS-Skills-stat-board">DOM based XSS Skills</p>
+                      <p id="DOM-based-XSS-Skills-Value-stat-board">0</p>
+                      <progress id='video-progress-DOM-based-XSS-stat-board' class="progress-bar-DOM-skills" min='0' max='100' value='0'></progress>
+                    </div>
+  
+                    <div>
+                      <p id="Sim-Zone-Skills-stat-board">Simulation Zone Skills</p>
+                      <p id="Sim-Zone-Skills-Value-stat-board">0</p>
+                      <progress id='video-progress-Sim-Zone-Skills-Progress-stat-board' class="progress-bar-Overall-skills" min='0' max='100' value='0'></progress>
+                    </div>
+                  </div>
+                </div> 
+              </div>
+            </div>
+          </div>
+
+          <button id="ExitButton4" class="button" onmouseenter="playButtonHoverMusic()" onclick="closePlayerStatsZone()">Return to Game</button>
+        </div>
+      </div>
+
+      <!-- Page Footer -->
+      <div id="pageFooter" class="footer">
+        <h3 style="font-size: 1vw;">About The XSS Game</h3>
+        <p style="font-size: 1vw;">This game is developed as part of the PhD project Gamification of Information Security Education at Norwegian University of Science and Technology (NTNU). 
+          <br>More information about the author can be found in the following links,</p>
+        
+        <!-- Author profile links -->
+        <a href="https://www.linkedin.com/in/nipunaw" target="_blank">
+          <img id="linkedinicon" src="images/linkedin.png" alt="LinkedIn Profile" />
+        </a>
+
+        <a href="https://www.ntnu.edu/employees/nipuna.h.weeratunge" target="_blank">
+          <img id="usericon" src="images/profile-user.png" alt="User Profile" />
+        </a>
+      </div>
+    </div>
+
+    <!-- Fluid Meter initialization for progress visualization -->
+    <script>
+      var fm = new FluidMeter();
+      fm.init({
+        targetContainer: document.getElementById("fluid-meter"),
+        fillPercentage: 0,
+        options: {
+          fontFamily: "Oxygen",
+          drawPercentageSign: true,
+          drawBubbles: false,
+          size: 200,
+          borderWidth: 5,
+          backgroundColor: "#000000",
+          canvasId:"LiquidCanvas",
+          foregroundColor: "#f81818",
+          foregroundFluidLayer: {
+            fillStyle: "#008080",
+            angularSpeed: 0,
+            maxAmplitude: 0,
+            frequency: 0,
+            horizontalSpeed: 0
+          },
+          backgroundFluidLayer: {
+            fillStyle: "#008080",
+            angularSpeed: 0,
+            maxAmplitude: 0,
+            frequency: 0,
+            horizontalSpeed: 0
+          }
+        }
+      });
+
+      var fm1 = new FluidMeter();
+      fm1.init({
+        targetContainer: document.getElementById("fluid-meter-statboard"),
+        fillPercentage: 0,
+        options: {
+          fontFamily: "Oxygen",
+          drawPercentageSign: true,
+          drawBubbles: false,
+          size: 200,
+          borderWidth: 5,
+          backgroundColor: "#000000",
+          canvasId:"LiquidCanvasStatboard",
+          foregroundColor: "#f81818",
+          foregroundFluidLayer: {
+            fillStyle: "#008080",
+            angularSpeed: 0,
+            maxAmplitude: 0,
+            frequency: 0,
+            horizontalSpeed: 0
+          },
+          backgroundFluidLayer: {
+            fillStyle: "#008080",
+            angularSpeed: 0,
+            maxAmplitude: 0,
+            frequency: 0,
+            horizontalSpeed: 0
+          }
+        }
+      });
+    </script>
+  </body>
+</html>

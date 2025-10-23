@@ -1,0 +1,2294 @@
+/* ===== Set border-box sizing model globally ===== */
+html {
+    box-sizing: border-box;
+}
+
+/* ===== Ensure all elements inherit the box-sizing model ===== */
+*, *::before, *::after {
+    box-sizing: inherit;
+}
+
+/* ===== MAIN BODY STYLING ===== */
+body {
+    font: normal 2vw "Helvetica Neue", Helvetica, sans-serif;
+    background-image: url(images/background-main.png);
+    background-repeat: no-repeat;
+    background-size: 100%;
+    background-color: #000000;
+    position: relative;
+}
+
+/* ===== MAIN CONTAINER ===== */
+.container {
+    display: block;
+    width: 100%;
+    margin: 1% 1%;
+    margin-top: 10%;
+    text-align: center;
+}
+
+/* ===== FOOTER ===== */
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 20%;
+    background-color: rgb(0, 0, 0);
+    color: white;
+    text-align: center;
+}
+
+/* ===== BUTTON STYLES ===== */
+.button {
+    background-color: #000000;
+    color: rgb(255, 255, 255);
+    border: 0.2vw solid #f81818;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 1.5vw;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    width: 20%;
+    height: 10%;
+}
+
+.button:hover {
+    background-color: #f5b330;
+    color: rgb(0, 0, 0);
+}
+
+/* ===== SPECIFIC BUTTON POSITIONS ===== */
+#startGameButton1 {
+    position: fixed;
+    top: 55%;
+    right: 40%;
+    z-index: 1;
+}
+
+#progress-bar-skills {
+    position: fixed;
+    top: 35%;
+    right: 1%;
+    width: 23%;
+    height: 20%;
+}
+
+#progress-bar-skills-stat-board {
+    position: fixed;
+    top: 35%;
+    left: 1%;
+    width: 23%;
+    height: 20%;
+}
+
+.statboardText {
+    position: fixed;
+    font-size: 0.8vw;
+    color: rgb(255, 255, 255);
+    font-weight: bold;
+    margin-left: 2%;
+    margin-top: 1%;
+}
+
+#XSSResourcesButton1, #XSSResourcesButton2, #XSSResourcesButton3, #XSSResourcesButton4, #XSSResourcesButton5, #XSSResourcesButton6 {
+    position: fixed;
+    top: 5%;
+    left: 1.5%;
+    width: 13%;
+    height: 18%;
+    text-align: center;
+}
+
+#LeaderBoardButton1 {
+    position: fixed;
+    top: 5%;
+    right: 1.5%;
+    width: 15%;
+    height: 15%;
+    text-align: center;
+}
+
+#AcceptButton1 {
+    position: fixed;
+    bottom: 2%;
+    left: 23%;
+    width: 30%;
+}
+
+#AcceptButton2 {
+    position: fixed;
+    top: 83%;
+    right: 40%;
+}
+
+#AcceptButton3, #AcceptButton4 {
+    position: fixed;
+    top: 87%;
+    right: 40%;
+}
+
+#SkipPreQuestionnaire {
+    position: fixed;
+    top: 87%;
+    right: 10%;
+    visibility: visible;
+}
+
+#SkipPostQuestionnaire {
+    position: fixed;
+    top: 87%;
+    right: 10%;
+    visibility: visible;
+}
+
+#AcceptButton5 {
+    position: fixed;
+    bottom: 19%;
+    right: 2%;
+}
+
+#DeclineButton1 {
+    position: fixed;
+    bottom: 2%;
+    right: 25%;
+}
+
+#OkButton1 {
+    position: fixed;
+    bottom: 2%;
+    right: 10%;
+    width: 10%;
+    height: 10%;
+}
+
+#OkButton2, #OkButton3, #OkButton4, #OkButton5, #OkButton6, #OkButton7, #OkButton8, #OkButton9, #OkButton10 {
+    position: fixed;
+    bottom: 3%;
+    right: 43%;
+}
+
+#ExitButton1 {
+    position: fixed;
+    top: 85%;
+    right: 5%;
+}
+
+#ExitButton2 {
+    position: fixed;
+    top: 60%;
+    right: 40%;
+}
+
+#ExitButton3 {
+    position: fixed;
+    bottom: 15%;
+    right: 1%;
+    width: 10%;
+    height: 20%;
+}
+
+#ExitButton4 {
+    position: fixed;
+    bottom: 2%;
+    right: 1%;
+}
+
+#CheckButtonXSSAttackerReflected {
+    position: fixed;
+    top: 15%;
+    right: 25%;
+    visibility: hidden;
+    z-index: 1;
+}
+
+#gamenamegif {
+    position: fixed;
+    bottom: 40%;
+    right: 20%;
+    width: 60%;
+    height: 45%;
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-5px);
+    }
+}
+
+/* ===== UI CONTROL BUTTONS ===== */
+.infobtn {
+    width: 5%;
+    height: 10%;
+    position: fixed;
+    top: 29%;
+    left: 6%;
+    cursor: pointer;
+    visibility: visible;
+}
+
+.mutemusicbtn {
+    width: 4%;
+    height: 8%;
+    position: fixed;
+    top: 30%;
+    left: 2%;
+    cursor: pointer;
+}
+
+.playmusicbtn {
+    width: 4%;
+    height: 8%;
+    position: fixed;
+    top: 30%;
+    left: 2%;
+    cursor: pointer;
+    visibility: hidden;
+}
+
+/* ===== MODAL/POPUP WINDOWS ===== */
+.window {
+    position: fixed;
+    z-index: 2;
+    padding-top: 1%;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.705);
+    z-index: 2;
+}
+
+#playerstatboard-mini {
+    position: fixed;
+    right: 0;
+    top: 0;
+    width: 25%;
+    height: 70%;
+    overflow: auto;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.705);
+    z-index: 0;
+    border: 0.2vw solid #ff0000;
+}
+
+#playerstatboard-skills-box {
+    position: fixed;
+    left: 1%;
+    top: 9%;
+    width: 25%;
+    height: 89%;
+    overflow: auto;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0);
+    z-index: -1;
+    border: 0.1vw solid #ff0000;
+}
+
+#playerstatboard-skills-feedback-box {
+    position: fixed;
+    left: 1%;
+    top: 13%;
+    width: 25%;
+    height: 43%;
+    overflow: auto;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0);
+    z-index: 0;
+    border: 0.1vw solid #ff0000;
+}
+
+#playerstatboard-badge-box {
+    position: fixed;
+    right: 0.5%;
+    top: 9%;
+    width: 21.5%;
+    height: 78%;
+    overflow: auto;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0);
+    z-index: -1;
+    border: 0.1vw solid #ff0000;
+}
+
+#playerstatboard-skills-affirmative-box {
+    position: fixed;
+    left: 26.5%;
+    top: 9%;
+    width: 51%;
+    height: 20%;
+    overflow: auto;
+    background-color: rgb(0, 0, 0);
+    background-color: rgb(0, 0, 0);
+    z-index: 0;
+    border: 0.1vw solid #ff0000;
+}
+
+#playerstatboard-feedback-box {
+    position: fixed;
+    left: 26.5%;
+    top: 9%;
+    width: 51%;
+    height: 89%;
+    overflow: auto;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0);
+    z-index: -1;
+    border: 0.1vw solid #ff0000;
+}
+
+#LiquidCanvas {
+    position: fixed;
+    height: 13%;
+    width: 6.5%;
+    top: 25%;
+    right: 5%;
+}
+
+#LiquidCanvasStatboard {
+    position: fixed;
+    height: 13%;
+    width: 6.5%;
+    top: 34%;
+    right: 0.5%;
+    z-index: 1;
+}
+
+/* ===== MODAL CONTENT STYLES ===== */
+.window-content {
+    position: fixed;
+    background-color: #000000d0;
+    margin: auto;
+    border: 0.2vw solid #888;
+    width: 60%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    -webkit-animation-name: animatetop;
+    -webkit-animation-duration: 0.4s;
+    animation-name: animatetop;
+    animation-duration: 0.4s;
+    border-radius: 2vw;
+}
+
+.window-content-simulator-zone {
+    position: fixed;
+    background-color: #000000d0;
+    margin: auto;
+    padding: 0%;
+    border: 0.2vw solid #888;
+    width: 60%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    -webkit-animation-name: animatetop;
+    -webkit-animation-duration: 0.4s;
+    animation-name: animatetop;
+    animation-duration: 0.4s;
+    border-radius: 2vw;
+}
+
+.window-content-ingame-statbook {
+    position: fixed;
+    background-color: #000000d0;
+    margin: auto;
+    padding: 0%;
+    border: 0.2vw solid #888;
+    width: 60%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    -webkit-animation-name: animatetop;
+    -webkit-animation-duration: 0.4s;
+    animation-name: animatetop;
+    animation-duration: 0.4s;
+    border-radius: 2vw;
+}
+
+/* ===== INFO POPUP STYLES ===== */
+.infowindow {
+    padding-top: 1%;
+    z-index: 2;
+}
+
+.infowindow-simulator-zone {
+    padding-top: 1%;
+    z-index: 2;
+}
+
+.infowindow-ingame-statbook {
+    padding-top: 1%;
+    z-index: 2;
+}
+
+.info-window-content {
+    width: 99.5%;
+    height: 97%;
+}
+
+.info-window-content-simulator-zone {
+    width: 99.5%;
+    height: 97%;
+}
+
+.info-window-content-ingame-statbook {
+    width: 99.5%;
+    height: 97%;
+}
+
+/* ===== MODAL ANIMATIONS ===== */
+@-webkit-keyframes animatetop {
+    from {
+        top: -300px;
+        opacity: 0
+    }
+    to {
+        top: 0;
+        opacity: 1
+    }
+}
+
+@keyframes animatetop {
+    from {
+        top: -300px;
+        opacity: 0
+    }
+    to {
+        top: 0;
+        opacity: 1
+    }
+}
+
+/* ===== MODAL HEADERS ===== */
+.window-header {
+    background-color: #f5b330;
+    border-radius: 1.8vw 1.8vw 0vw 0vw;
+    color: rgb(0, 0, 0);
+    font-weight: bold;
+    height: 10%;
+}
+
+.window-header-error {
+    background-color: #f5b330;
+    border-radius: 1.8vw 1.8vw 0vw 0vw;
+    color: rgb(0, 0, 0);
+    font-weight: bold;
+    height: 10%;
+    margin-top: 0%;
+}
+
+.window-header-simulator-zone {
+    border-radius: 1.8vw 1.8vw 0vw 0vw;
+    background-color: #f5b330;
+    color: rgb(0, 0, 0);
+    font-weight: bold;
+    height: 6%;
+}
+
+.window-header-ingame-statbook {
+    border-radius: 1.8vw 1.8vw 0vw 0vw;
+    background-color: #f5b330;
+    color: rgb(0, 0, 0);
+    font-weight: bold;
+    height: 6%;
+}
+
+#emptyPlayerInfoHeader {
+    font-size: 2vw;
+    position: fixed;
+    left: 32.5%;
+    top: 0%;
+    font-weight: bold;
+}
+
+#invalidPlayerNameHeader {
+    font-size: 2vw;
+    position: fixed;
+    left: 40%;
+    top: 0%;
+    font-weight: bold;
+}
+
+#emptyAnswerHeader {
+    font-size: 2vw;
+    position: fixed;
+    left: 40%;
+    top: 0%;
+    font-weight: bold;
+}
+
+#AnswerPopUpHeader {
+    font-size: 2vw;
+    position: fixed;
+    left: 40%;
+    top: 3.5%;
+    font-weight: bold;
+}
+
+#interactivityPopUpHeader {
+    font-size: 2vw;
+    position: fixed;
+    left: 30%;
+    top: 3.5%;
+    font-weight: bold;
+}
+
+#privacyPolicyHeader {
+    font-size: 2vw;
+    position: fixed;
+    left: 30%;
+    top: 3.5%;
+    font-weight: bold;
+}
+
+#playerStatsHeader {
+    font-size: 2vw;
+    position: fixed;
+    left: 45%;
+    top: 3.5%;
+    font-weight: bold;
+}
+
+#gameInfoHeader {
+    font-size: 2vw;
+    position: fixed;
+    left: 45%;
+    top: 3.5%;
+    font-weight: bold;
+    margin-top: 0.5%;
+}
+
+.window-header p {
+    font-size: 2vw;
+    text-align: center;
+    font-weight: bold;
+    margin-top: 0.5%;
+}
+
+.window-header-simulator-zone p {
+    font-size: 2vw;
+    text-align: center;
+    font-weight: bold;
+    margin-top: -0.5%;
+}
+
+.window-header-ingame-statbook p {
+    font-size: 2vw;
+    text-align: center;
+    font-weight: bold;
+    margin-top: -0.5%;
+}
+
+/* ===== MODAL BODY ===== */
+.window-body-simulator-zone {
+    margin: 5px;
+    padding: 2px 16px 50px 16px;
+}
+
+.window-body ul {
+    color: rgb(255, 255, 255);
+    font-size: 2vw;
+    text-align: justify;
+}
+
+/* ===== POPUP TEXT LISTS ===== */
+ul.poptexts {
+    list-style-type: square;
+    color: rgb(255, 255, 255);
+    text-align: left;
+    line-height: 1.5;
+    font-weight: bold;
+    font-size: 1.55vw;
+    margin: 0;
+    padding-left: 1.5em;
+}
+
+ul.poptexts-info {
+    list-style-type: square;
+    color: rgb(255, 255, 255);
+    text-align: left;
+    line-height: 1.5;
+    font-weight: bold;
+    font-size: 1.55vw;
+    margin: 0;
+    padding-left: 1.5em;
+}
+
+/* ===== FORM ELEMENTS ===== */
+input[type=text] {
+    width: 50%;
+    box-sizing: border-box;
+    border: 0.2vw solid red;
+    border-radius: 0vw;
+    background-color: #f5b330;
+    color: rgb(255, 0, 0);
+    font-size: 1, 2vw;
+    font-weight: bold;
+    position: fixed;
+    top: 12%;
+    left: 25%;
+    text-align: center;
+}
+
+#playerNameHeading {
+    color: rgb(255, 255, 255);
+    font-size: 2vw;
+    position: fixed;
+    top: 10%;
+    right: 41%;
+    font-weight: bold;
+    background-color: #000000;
+    line-height: 2.5vw;
+}
+
+#playerAvatarHeading {
+    color: rgb(255, 255, 255);
+    font-size: 2vw;
+    position: fixed;
+    top: 35%;
+    right: 41%;
+    font-weight: bold;
+    background-color: #000000;
+    line-height: 2.5vw;
+}
+
+/* ===== PLAYER AVATAR STYLES ===== */
+.playerAvatars {
+    width: 14%;
+    height: 28%;
+    border: 0.4vw solid #000000;
+    border-radius: 1vw;
+    cursor: pointer;
+}
+
+.playerAvatars:hover {
+    border: 0.4vw solid #FBFBFB !important;
+    border-radius: 1vw !important;
+    transition-duration: 0.4s !important;
+}
+
+#playerNameBox {
+    position: fixed;
+    top: 20%;
+    left: 25%;
+    width: 50%;
+    height: 10%;
+    background-color: #000000;
+    font-size: 2vw;
+}
+
+#avatar0 {
+    position: fixed;
+    top: 45%;
+    left: 3%;
+}
+
+#avatar1 {
+    position: fixed;
+    top: 45%;
+    left: 19%;
+}
+
+#avatar2 {
+    position: fixed;
+    top: 45%;
+    left: 35%;
+}
+
+#avatar3 {
+    position: fixed;
+    top: 45%;
+    left: 51%;
+}
+
+#avatar4 {
+    position: fixed;
+    top: 45%;
+    left: 67%;
+}
+
+#avatar5 {
+    position: fixed;
+    top: 45%;
+    left: 83%;
+}
+
+.playerRoleAvatars {
+    width: 15%;
+    height: 30%;
+    border: 0.4vw solid #000000;
+    border-radius: 1vw;
+    cursor: pointer;
+}
+
+.playerRoleAvatars:hover {
+    border: 0.4vw solid #FBFBFB !important;
+    border-radius: 1vw !important;
+    transition-duration: 0.4s !important;
+}
+
+#playerRoleavatar0 {
+    position: fixed;
+    top: 34%;
+    left: 20%;
+}
+
+#playerRoleavatar1 {
+    position: fixed;
+    top: 34%;
+    left: 43%;
+}
+
+#playerRoleavatar2 {
+    position: fixed;
+    top: 34%;
+    left: 66%;
+}
+
+#labelPlayerRoleAttacker {
+    color: rgb(255, 255, 255);
+    font-size: 2vw;
+    position: fixed;
+    top: 27%;
+    left: 22%;
+    font-weight: bold;
+    background-color: #000000;
+    line-height: 2vw;
+}
+
+#labelPlayerRoleDefender {
+    color: rgb(255, 255, 255);
+    font-size: 2vw;
+    position: fixed;
+    top: 27%;
+    left: 45%;
+    font-weight: bold;
+    background-color: #000000;
+    line-height: 2vw;
+}
+
+#labelPlayerRoleUser {
+    color: rgb(255, 255, 255);
+    font-size: 2vw;
+    position: fixed;
+    top: 27%;
+    left: 70%;
+    font-weight: bold;
+    background-color: #000000;
+    line-height: 2vw;
+}
+
+#playerRoleHeading {
+    color: rgb(255, 255, 255);
+    font-size: 2vw;
+    position: fixed;
+    top: 8%;
+    right: 41%;
+    font-weight: bold;
+    background-color: #000000;
+    line-height: 2vw;
+}
+
+#linkedinicon {
+    position: fixed;
+    left: 51%;
+    bottom: 2%;
+    height: 3%;
+    width: 2%;
+}
+
+#usericon {
+    position: fixed;
+    left: 47%;
+    bottom: 2%;
+    height: 3%;
+    width: 2%;
+}
+
+/* ===== PRIVACY POLICY STYLES ===== */
+#privacyPolicyContext {
+    background-color: #000000;
+    position: fixed;
+    left: 5%;
+    top: 5%;
+    text-align: left;
+    white-space: inherit;
+    border: 0.1vw solid #ff0000;
+    font-size: 1.5vw;
+    width: 85%;
+    height: 90%;
+    overflow: auto;
+    color: #ffffff;
+    padding: 20px;
+    scrollbar-color: #f5b330 #000000;
+}
+
+#privacyPolicyContext P {
+    margin-bottom: 0.08in;
+    direction: ltr;
+    widows: 2;
+    orphans: 2;
+    white-space: inherit;
+    color: #ffffff;
+    font-size: 1.5vw;
+}
+
+#privacyPolicyContext H2 {
+    margin-top: 0.14in;
+    margin-bottom: 0in;
+    direction: ltr;
+    color: #f5b330;
+    page-break-inside: avoid;
+    widows: 2;
+    orphans: 2;
+    white-space: inherit;
+}
+
+#privacyPolicyContext H2.western {
+    font-family: "Calibri", serif;
+    font-size: 2vw;
+    white-space: inherit;
+}
+
+#privacyPolicyContext H2.internal {
+    font-family: "Calibri", serif;
+    font-size: 2vw;
+    white-space: inherit;
+}
+
+/* ===== QUESTIONNAIRE STYLES ===== */
+.gameQuestionnaire {
+    background-color: #000000;
+    size: 100% 100%;
+    position: fixed;
+    top: 2%;
+    left: 15%;
+    text-align: left;
+    white-space: inherit;
+    font-size: 1.5vw;
+    width: 80%;
+    height: 80%;
+    overflow: auto;
+    scrollbar-color: #f5b330 #000000;
+    color: #ffffff;
+}
+
+.gameQuestionnaire P {
+    margin-bottom: 1%;
+    direction: ltr;
+    widows: 2;
+    orphans: 2;
+    white-space: inherit;
+    color: #ffffff;
+    font-size: 1.5vw;
+}
+
+.gameQuestionnaire H2 {
+    margin-left: 1%;
+    margin-top: 1%;
+    margin-bottom: 0%;
+    direction: ltr;
+    color: #f5b330;
+    page-break-inside: avoid;
+    widows: 2;
+    orphans: 2;
+    white-space: inherit;
+}
+
+.gameQuestionnaire H2.western {
+    margin-left: 1%;
+    font-family: "Calibri", serif;
+    font-size: 2vw;
+    white-space: inherit;
+    text-align: center;
+}
+
+.gameQuestionnaire H2.internal {
+    margin-left: 1%;
+    font-family: "Calibri", serif;
+    font-size: 2vw;
+    white-space: inherit;
+}
+
+.radioButtonQuestionnaire {
+    height: 3%;
+    width: 3%;
+    accent-color: #f5b330;
+    cursor: pointer;
+    margin-bottom: 1%;
+}
+
+.radioButtonQuestionnaire1 {
+    width: 5%;
+    height: 5%;
+    accent-color: #f5b330;
+    cursor: pointer;
+    margin-bottom: 1%;
+}
+
+hr.horizLine {
+    border: 0.2vw solid #f5b330;
+}
+
+/* ===== IN-GAME PLAYER DISPLAY ===== */
+.playerAvatarInGame {
+    width: 6%;
+    height: 12%;
+    border: 0.2vw solid #ff0000;
+    border-radius: 1vw;
+    position: fixed;
+    top: 6%;
+    right: 1%;
+}
+
+.playerNameInGame {
+    color: rgb(255, 0, 0);
+    font-size: 1.5vw;
+    position: fixed;
+    top: -1%;
+    right: 1%;
+    font-weight: bold;
+    width: auto;
+    word-wrap: break-word;
+    line-height: 1.2vw;
+    background-color: #000000;
+}
+
+#playerBatchText {
+    color: rgb(255, 255, 255);
+    font-size: 1.3vw;
+    position: fixed;
+    top: 3%;
+    right: 18%;
+    font-weight: bold;
+    width: auto;
+    word-wrap: break-word;
+    line-height: 1.2vw;
+    background-color: #000000;
+}
+
+#badgeText {
+    color: rgb(255, 0, 0);
+    font-size: 30px;
+    position: fixed;
+    top: 40%;
+    right: 1%;
+    font-weight: bold;
+    width: auto;
+    line-height: 30px;
+    background-color: #000000;
+}
+
+/* ===== QUESTION STYLING ===== */
+.questionHeading {
+    color: rgb(255, 255, 255);
+    font-size: 2vw;
+    position: fixed;
+    top: 0%;
+    right: 45%;
+    font-weight: bold;
+    background-color: #000000;
+    line-height: 2vw;
+}
+
+#questionTextContainer1 {
+    color: rgb(255, 0, 0);
+    font-size: 1.5vw;
+    position: fixed;
+    top: 10%;
+    left: 15%;
+    font-weight: bold;
+    background-color: #000000;
+    width: 55%;
+    z-index: 1;
+}
+
+/* ===== LIKERT SCALE STYLES ===== */
+form .statement {
+    display: block;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 30px 0 0 4.25%;
+    margin-bottom: 10px;
+}
+
+form .likert {
+    list-style: none;
+    width: 100%;
+    margin: 0;
+    padding: 0 0 35px;
+    display: block;
+    border-bottom: 2px solid #efefef;
+}
+
+form .likert:last-of-type {
+    border-bottom: 0;
+}
+
+form .likert:before {
+    content: '';
+    position: relative;
+    top: 10%;
+    left: 9.5%;
+    display: block;
+    background-color: #efefef;
+    height: 10px;
+    width: 0%;
+}
+
+form .likert li {
+    display: inline-block;
+    width: 19%;
+    text-align: center;
+    vertical-align: top;
+}
+
+form .likert li input[type=radio] {
+    display: block;
+    position: relative;
+    bottom: 50%;
+    left: 50%;
+    margin-left: -6px;
+    width: 10%;
+    height: 1em;
+}
+
+form .likert li label {
+    width: 100%;
+}
+
+form .buttons {
+    margin: 30px 0;
+    padding: 0 4.25%;
+    text-align: right;
+}
+
+form .buttons button {
+    padding: 5px 10px;
+    background-color: #67ab49;
+    border: 0;
+    border-radius: 3px;
+}
+
+form .buttons .clear {
+    background-color: #e9e9e9;
+}
+
+form .buttons .submit {
+    background-color: #67ab49;
+}
+
+form .buttons .clear:hover {
+    background-color: #ccc;
+}
+
+form .buttons .submit:hover {
+    background-color: #14892c;
+}
+
+/* ===== QUESTION TILES ===== */
+.questionTile {
+    border: 0.4vw solid #000000;
+    color: rgb(255, 255, 255);
+    height: 17%;
+    width: 23%;
+    list-style-type: none;
+    position: fixed;
+    border-radius: 1vw;
+    cursor: pointer;
+    bottom: 0%;
+}
+
+.questionTileText {
+    color: rgb(255, 255, 255);
+    font-family: "Calibri", serif;
+    font-size: 1.2vw;
+    font-weight: bold;
+    line-height: normal;
+    text-align: center;
+    vertical-align: text-top;
+}
+
+#questionTileText5 {
+    color: rgb(255, 255, 255);
+    font-family: "Calibri", serif;
+    font-size: 1.3vw;
+    font-weight: bold;
+    line-height: normal;
+    text-align: center;
+    vertical-align: text-top;
+    margin-top: 0%;
+}
+
+#question1Tile {
+    position: fixed;
+    left: 10%;
+    background-color: #41521F;  
+}
+
+#question2Tile {
+    position: fixed;
+    left: 26%;
+    background-color: #6564DB;
+}
+
+#question3Tile {
+    position: fixed;
+    left: 51%;
+    background-color: #FF7F11;
+}
+
+#question4Tile {
+    position: fixed;
+    left: 76%;
+    background-color: #FF1B1C;
+}
+
+#questionInfoTile1 {
+    position: fixed;
+    top: 35%;
+    left: 70%;
+    height: 13%;
+    width: 15%;
+    background-color: #FF1B1C;
+    border: 0.4vw solid #fbfbfb;
+    border-radius: 1vw;
+    animation: bounce 0.7s;
+    animation-direction: alternate;
+    animation-timing-function: cubic-bezier(0.5, 0.05, 1, 0.5);
+    animation-iteration-count: infinite;
+}
+
+#questionInfoTile2 {
+    position: fixed;
+    top: 26%;
+    right: 15%;
+    height: 13%;
+    width: 15%;
+    background-color: #FF1B1C;
+    border: 0.4vw solid #fbfbfb;
+    animation: bounce 0.7s;
+    animation-direction: alternate;
+    animation-timing-function: cubic-bezier(0.5, 0.05, 1, 0.5);
+    animation-iteration-count: infinite;
+}
+
+#questionInfoTile1:hover {
+    border: 0.4vw solid #0D0EF2 !important;
+    border-radius: 1vw !important;
+    transition-duration: 0.4s !important;
+}
+
+#questionInfoTile2:hover {
+    border: 0.4vw solid #0D0EF2 !important;
+    border-radius: 1vw !important;
+    transition-duration: 0.4s !important;
+}
+
+.questionTile:hover {
+    border: 0.4vw solid #FBFBFB !important;
+    border-radius: 1vw !important;
+    transition-duration: 0.4s !important;
+}
+
+.questionImage {
+    position: fixed;
+    top: 4%;
+    left: 15%;
+    transform: scale(0.75, 0.75);
+    z-index: 0;
+}
+
+.questionText {
+    color: rgb(255, 255, 255);
+    font-family: "Calibri", serif;
+    font-size: 2vw;
+    font-weight: bold;
+    position: fixed;
+    top: 10%;
+    left: 15%;
+    width: 1545px;
+    word-wrap: break-word;
+    line-height: normal;
+    z-index: 0;
+    background-color: #000000;
+}
+
+.levelgifs {
+    z-index: 1;
+    height: 60%;
+    width: 60%;
+    position: fixed;
+    top: 15%;
+    left: 20%;
+    visibility: hidden;
+}
+
+#levelTimer {
+    color: rgb(255, 255, 255);
+    font-family: "Calibri", serif;
+    font-size: 48px;
+    font-weight: bold;
+    position: fixed;
+    top: 3%;
+    left: 15%;
+}
+
+/* ===== SCORE DISPLAYS ===== */
+#playerScoreInGame {
+    font-family: "Calibri", serif;
+    font-size: 2vw;
+    font-weight: bold;
+    position: fixed;
+    top: 20%;
+    right: 1%;
+    color: rgb(255, 255, 255);
+}
+
+#playerScoreInGame-statboard {
+    font-family: "Calibri", serif;
+    font-size: 2vw;
+    font-weight: bold;
+    position: fixed;
+    top: 19%;
+    right: 1%;
+    color: rgb(255, 255, 255);
+}
+
+#playerScoreContainer {
+    font-family: "Calibri", serif;
+    font-size: 2vw;
+    font-weight: bold;
+    position: fixed;
+    top: 14%;
+    right: 4%;
+    color: rgb(255, 255, 255);
+}
+
+#playerScoreContainer-statboard {
+    font-family: "Calibri", serif;
+    font-size: 2vw;
+    font-weight: bold;
+    position: fixed;
+    top: 14%;
+    right: 4%;
+    color: rgb(255, 255, 255);
+}
+
+.gameExitText {
+    color: rgb(255, 255, 255);
+    font-family: "Calibri", serif;
+    font-size: 3vw;
+    font-weight: bold;
+    position: fixed;
+    top: 20%;
+    left: 20%;
+    width: 60%;
+    word-wrap: break-word;
+    line-height: normal;
+    z-index: 0;
+    background-color: #000000;
+    line-height: 3vw;
+}
+
+/* ===== LEADERBOARD TABLE ===== */
+#scorableTable {
+    overflow-y: auto;
+    scrollbar-color: #f5b330 #000000;
+}
+
+table {
+    font-family: "Calibri", serif;
+    font-weight: bold;
+    border-collapse: collapse;
+    width: 73vw;
+    height: 85vh;
+    position: fixed;
+    top: 10vh;
+    left: 15vw;
+    background-color: #000000;
+    color: #ffffff;
+    font-size: 1.4vw;
+    display: block;
+    overflow-y: auto;
+    scrollbar-color: #f5b330 #000000;
+    border: 0.2vw solid red;
+}
+
+th:nth-child(1), td:nth-child(1) {
+    width: 25%;
+}
+
+th:nth-child(2), td:nth-child(2) {
+    width: 15%;
+}
+
+th:nth-child(3), td:nth-child(3) {
+    width: 5%;
+}
+
+th:nth-child(4), td:nth-child(4) {
+    width: 55%;
+}
+
+td {
+    border: 0.2vw solid #dddddd;
+    text-align: center;
+    padding: 1.2vh;
+    vertical-align: middle;
+}
+
+th {
+    position: sticky;
+    top: 0;
+    border: 0.2vw solid #dddddd;
+    text-align: center;
+    padding: 1.2vh;
+    background-color: #000000;
+    z-index: 2;
+}
+
+tr:nth-child(even) {
+    background-color: #2B2B2B;
+    color: #ffffff;
+}
+
+.avatar-image-cell {
+    height: 32vh;
+    width: 16vh;
+    object-fit: cover;
+    border: 0.2vw solid red;
+    border-radius: 0.1vw;
+    display: block;
+    margin: 0 auto;
+}
+
+.badge-attacker-cell, .badge-defender-cell, .badge-user-cell, .badge-SimZone-cell {
+    height: 32vh;
+    width: 16vh;
+    border: 0.2vw solid red;
+    border-radius: 0.1vw;
+    margin: 0 0.4vw;
+    vertical-align: middle;
+}
+
+#scorableTable::-webkit-scrollbar {
+    width: 0.8vw;
+}
+
+#scorableTable::-webkit-scrollbar-thumb {
+    background: #f5b330;
+    border-radius: 1vw;
+}
+
+#scorableTable::-webkit-scrollbar-track {
+    background: #000000;
+}
+
+/* ===== BADGE DISPLAYS ===== */
+#attackerRoleCompletedBadge {
+    position: fixed;
+    height: 12%;
+    width: 6%;
+    z-index: 1;
+    top: 52%;
+    right: 15.5%;
+    border: 0.2vw solid red;
+    opacity: 30%;
+}
+
+#attackerRoleCompletedBadgeMini {
+    position: fixed;
+    height: 8%;
+    width: 4%;
+    z-index: 1;
+    top: 10%;
+    right: 20%;
+    border: 0.2vw solid red;
+    opacity: 30%;
+}
+
+#defenderRoleCompletedBadge {
+    position: fixed;
+    height: 12%;
+    width: 6%;
+    z-index: 1;
+    top: 52%;
+    right: 8.5%;
+    border: 0.2vw solid red;
+    opacity: 30%;
+}
+
+#defenderRoleCompletedBadgeMini {
+    position: fixed;
+    height: 8%;
+    width: 4%;
+    z-index: 1;
+    top: 10%;
+    right: 15%;
+    border: 0.2vw solid red;
+    opacity: 30%;
+}
+
+#userRoleCompletedBadge {
+    position: fixed;
+    height: 12%;
+    width: 6%;
+    z-index: 1;
+    top: 52%;
+    right: 1.5%;
+    border: 0.2vw solid red;
+    opacity: 30%;
+}
+
+#userRoleCompletedBadgeMini {
+    position: fixed;
+    height: 8%;
+    width: 4%;
+    z-index: 1;
+    top: 19%;
+    right: 20%;
+    border: 0.2vw solid red;
+    opacity: 30%;
+}
+
+#simZoneCompletedBadge {
+    position: fixed;
+    height: 12%;
+    width: 6%;
+    z-index: 1;
+    top: 66%;
+    right: 8.5%;
+    border: 0.2vw solid red;
+    opacity: 30%;
+}
+
+#simZoneCompletedBadgeMini {
+    position: fixed;
+    height: 8%;
+    width: 4%;
+    z-index: 1;
+    top: 19%;
+    right: 15%;
+    border: 0.2vw solid red;
+    opacity: 30%;
+}
+
+.badge-profile {
+    height: 110px;
+    width: 110px;
+    position: fixed;
+    top: 30%;
+    right: 1%;
+    border: 0.2vw solid red;
+    visibility: hidden;
+}
+
+/* ===== STATBOARD CONTROLS ===== */
+#playerStatboard-Extended {
+    position: fixed;
+    top: 2%;
+    right: 10%;
+    width: 4%;
+    height: 8%;
+    cursor: pointer;
+}
+
+#playerStatboard-Extended:hover {
+    border: 0.3vw solid #0D0EF2 !important;
+    border-radius: 1vw !important;
+    transition-duration: 0.4s !important;
+}
+
+#playerStatboard-Extended-stat-mini {
+    position: fixed;
+    bottom: 28%;
+    right: 47%;
+    width: 4%;
+    height: 8%;
+    cursor: pointer;
+    animation: bounce 0.7s;
+    animation-direction: alternate;
+    animation-timing-function: cubic-bezier(0.5, 0.05, 1, 0.5);
+    animation-iteration-count: infinite;
+}
+
+#playerStatboard-Extended-stat-mini:hover {
+    border: 0.3vw solid #0D0EF2 !important;
+    border-radius: 1vw !important;
+    transition-duration: 0.4s !important;
+}
+
+/* ===== INTERACTIVITY ELEMENTS ===== */
+.interactivity-button {
+    height: 90px;
+    width: 90px;
+    position: fixed;
+    top: 15%;
+    left: 45%;
+    cursor: pointer;
+    z-index: 1;
+    opacity: 90%;
+    animation: bounce 0.7s;
+    animation-direction: alternate;
+    animation-timing-function: cubic-bezier(0.5, 0.05, 1, 0.5);
+    animation-iteration-count: infinite;
+}
+
+.interactivity-button:hover {
+    border: 0.3vw solid #0D0EF2 !important;
+    border-radius: 1vw !important;
+    transition-duration: 0.4s !important;
+}
+
+#InteractivityButton2 {
+    position: fixed;
+    height: 8%;
+    width: 4%;
+    top: 47%;
+    left: 80%;
+}
+
+#InteractivityButton3 {
+    height: 8%;
+    width: 4%;
+    position: fixed;
+    top: 15%;
+    left: 80%;
+}
+
+.circleInteractiveButton {
+    height: 400px;
+    line-height: 80px;
+    width: 400px;
+    font-size: 20px;
+    font-weight: bold;
+    border-radius: 50%;
+    color: black;
+    text-align: center;
+    cursor: pointer;
+    z-index: 1;
+    border: 0.4vw solid #808080;
+    visibility: hidden;
+    animation: bounce 0.7s;
+    animation-direction: alternate;
+    animation-timing-function: cubic-bezier(0.5, 0.05, 1, 0.5);
+    animation-iteration-count: infinite;
+}
+
+#circleInteractiveButton1 {
+    position: fixed;
+    top: 45%;
+    left: 5%;
+    background-color: #5e3c58;
+}
+
+#circleInteractiveButton2 {
+    position: fixed;
+    top: 34%;
+    left: 45%;
+    background-color: #435274;
+}
+
+.circleInteractiveButton:hover {
+    border: 0.4vw solid #0df27e !important;
+    border-radius: 50% !important;
+    transition-duration: 0.4s !important;
+}
+
+.circleInteractiveText {
+    color: rgb(255, 255, 255);
+    font-family: "Calibri", serif;
+    font-size: 40px;
+    font-weight: bold;
+    line-height: normal;
+    text-align: center;
+    vertical-align: center;
+    margin-top: 35%;
+    visibility: hidden;
+}
+
+.interactivityArrow {
+    width: 33%;
+    z-index: 1;
+    transform: scale(0.3, 0.3);
+    visibility: hidden;
+}
+
+#InteractivityArrowRight {
+    position: fixed;
+    top: -1%;
+    left: 5%;
+}
+
+#InteractivityArrowLeft {
+    position: fixed;
+    top: -11%;
+    left: 32%;
+}
+
+#XSSCheckBoxAttackerReflected {
+    position: fixed;
+    top: 25%;
+    left: 25%;
+    width: 28%;
+    height: 10%;
+    visibility: hidden;
+    z-index: 1;
+    font-size: 1.5vw;
+}
+
+#DOMSimImage {
+    position: fixed;
+    top: 22%;
+    left: 10%;
+    width: 80%;
+    height: 35%;
+    visibility: hidden;
+    z-index: 1;
+}
+
+#sanitizedText {
+    position: fixed;
+    top: 16%;
+    left: 38%;
+    visibility: hidden;
+    z-index: 1;
+    font-size: 1.5vw;
+    color: black;
+    font-weight: bold;
+    background-color: red;
+    width: 40%;
+    word-wrap: break-word;
+}
+
+.interactivity-back-button {
+    position: fixed;
+    top: 8%;
+    left: 85%;
+    visibility: hidden;
+    z-index: 1;
+    height: 10%;
+    width: 10%;
+}
+
+.interactivity-back-button:hover {
+    border: 0.3vw solid #0D0EF2 !important;
+    border-radius: 1vw !important;
+    transition-duration: 0.4s !important;
+}
+
+#questionImageContainerSimulatorZone1 {
+    position: fixed;
+    top: 23%;
+    left: 20%;
+    transform: scale(1.6, 1.6);
+}
+
+#tabImage {
+    position: fixed;
+    top: 14%;
+    left: 1.5%;
+    height: 41%;
+    width: 24%;
+    z-index: 1;
+}
+
+.simulatorInteractiveText {
+    color: rgb(255, 255, 255);
+    font-family: "Calibri", serif;
+    font-size: 38px;
+    font-weight: bold;
+    position: fixed;
+    top: 60%;
+    left: 5%;
+    width: 1545px;
+    word-wrap: break-word;
+    line-height: normal;
+    z-index: 2;
+    background-color: #41521F;
+}
+
+#simulatorInteractiveText1 {
+    color: rgb(255, 255, 255);
+    font-family: "Calibri", serif;
+    font-size: 38px;
+    font-weight: bold;
+    position: fixed;
+    top: 60%;
+    left: 5%;
+    width: 1545px;
+    word-wrap: break-word;
+    line-height: normal;
+    z-index: 2;
+    background-color: #41521F;
+}
+
+#simulatorInteractiveText2 {
+    position: fixed;
+    top: 25%;
+    left: 35%;
+    width: 310px;
+    visibility: hidden;
+    background-color: #FF1B1C;
+    font-size: 26px;
+}
+
+#levelTimer {
+    visibility: hidden;
+}
+
+/* ===== VIDEO RESPONSIVENESS ===== */
+@media (min-aspect-ratio: 16/9) {
+    #myVideo {
+        width: 100%;
+        height: auto;
+    }
+}
+
+@media (max-aspect-ratio: 16/9) {
+    #myVideo {
+        width: auto;
+        height: 100%;
+    }
+}
+
+#progress-bar-skills-statboard {
+    position: fixed;
+    top: 35%;
+    left: 1%;
+    width: 23%;
+    height: 20%;
+}
+
+/* ===== PROGRESS BAR STYLES ===== */
+#video-progress-Ref-XSS-overall-statboard {
+    border: none;
+    position: fixed;
+    bottom: 35%;
+    left: 2.5%;
+    height: 2%;
+    width: 23%;
+    z-index: 1;
+}
+
+#progress-bar-Ref-skills-value-statboard {
+    position: fixed;
+    bottom: 38%;
+    left: -43%;
+    width: 100%;
+    color: #f9f6f6;
+    font-size: 1vw;
+    z-index: 1;
+    font-weight: bold;
+}
+
+#playerstatboard-skills-affirmative-box-text {
+    position: fixed;
+    top: 10%;
+    left: 30%;
+    width: 45%;
+    color: #00E5CC;
+    font-size: 1.6vw;
+    z-index: 2;
+    font-weight: bold;
+    word-wrap: break-word;
+    visibility: visible;
+}
+
+#playerstatboard-skills-feedback-box-text {
+    position: fixed;
+    top: 15%;
+    left: -43%;
+    width: 100%;
+    color: #f9f6f6;
+    font-size: 1.2vw;
+    z-index: 1;
+    font-weight: bold;
+}
+
+#role-briefing-text {
+    position: fixed;
+    top: 28%;
+    left: 27%;
+    width: 50%;
+    color: #f9f6f6;
+    font-size: 1.2vw;
+    z-index: 1;
+    font-weight: bold;
+}
+
+#playerstatboard-feedback-box-text {
+    position: fixed;
+    top: 28%;
+    left: 27%;
+    width: 50%;
+    color: #f9f6f6;
+    font-size: 1vw;
+    z-index: 1;
+    font-weight: bold;
+    text-align: left;
+    visibility: visible;
+}
+
+#Ref-XSS-Skills-Value-stat-board {
+    position: fixed;
+    bottom: 38%;
+    left: -25%;
+    width: 100%;
+    color: #f9f6f6;
+    font-size: 1vw;
+    z-index: 1;
+    font-weight: bold;
+}
+
+#Stored-XSS-Skills-stat-board {
+    position: fixed;
+    bottom: 28%;
+    left: -43.5%;
+    width: 100%;
+    color: #f9f6f6;
+    font-size: 1vw;
+    z-index: 1;
+    font-weight: bold;
+}
+
+#Stored-XSS-Skills-Value-stat-board {
+    position: fixed;
+    bottom: 28%;
+    left: -25%;
+    width: 100%;
+    color: #f9f6f6;
+    font-size: 1vw;
+    z-index: 1;
+    font-weight: bold;
+}
+
+#video-progress-Stored-XSS-stat-board {
+    border: none;
+    position: fixed;
+    bottom: 25%;
+    left: 2.5%;
+    height: 2%;
+    width: 23%;
+    z-index: 1;
+}
+
+#video-progress-DOM-based-XSS-stat-board {
+    border: none;
+    position: fixed;
+    bottom: 15%;
+    left: 2.5%;
+    height: 2%;
+    width: 23%;
+    z-index: 1;
+}
+
+#DOM-based-XSS-Skills-stat-board {
+    position: fixed;
+    bottom: 18%;
+    left: -42%;
+    width: 100%;
+    color: #f9f6f6;
+    font-size: 1vw;
+    z-index: 1;
+    font-weight: bold;
+}
+
+#DOM-based-XSS-Skills-Value-stat-board {
+    position: fixed;
+    bottom: 18%;
+    left: -25%;
+    width: 100%;
+    color: #f9f6f6;
+    font-size: 1vw;
+    z-index: 1;
+    font-weight: bold;
+}
+
+#video-progress-Sim-Zone-Skills-Progress-stat-board {
+    border: none;
+    position: fixed;
+    bottom: 5%;
+    left: 2.5%;
+    height: 2%;
+    width: 23%;
+    z-index: 1;
+}
+
+#Sim-Zone-Skills-stat-board {
+    position: fixed;
+    bottom: 8%;
+    left: -42%;
+    width: 100%;
+    color: #f9f6f6;
+    font-size: 1vw;
+    z-index: 1;
+    font-weight: bold;
+}
+
+#Sim-Zone-Skills-Value-stat-board {
+    position: fixed;
+    bottom: 8%;
+    left: -25%;
+    width: 100%;
+    color: #f9f6f6;
+    font-size: 1vw;
+    z-index: 1;
+    font-weight: bold;
+}
+
+#video-progress-Ref-XSS {
+    border: none;
+    position: fixed;
+    bottom: 56%;
+    right: 1%;
+    height: 2%;
+    width: 23%;
+    z-index: 1;
+}
+
+#Ref-XSS-Skills {
+    position: fixed;
+    bottom: 58%;
+    right: -32%;
+    width: 100%;
+    color: #f9f6f6;
+    font-size: 1vw;
+    z-index: 1;
+    font-weight: bold;
+}
+
+#Ref-XSS-Skills-Value {
+    position: fixed;
+    bottom: 58%;
+    right: -45%;
+    width: 100%;
+    color: #f9f6f6;
+    font-size: 1vw;
+    z-index: 1;
+    font-weight: bold;
+}
+
+#video-progress-Stored-XSS {
+    border: none;
+    position: fixed;
+    bottom: 48%;
+    right: 1%;
+    height: 2%;
+    width: 23%;
+    z-index: 1;
+}
+
+#Stored-XSS-Skills {
+    position: fixed;
+    bottom: 50%;
+    right: -31%;
+    width: 100%;
+    color: #f9f6f6;
+    font-size: 1vw;
+    z-index: 1;
+    font-weight: bold;
+}
+
+#Stored-XSS-Skills-Value {
+    position: fixed;
+    bottom: 50%;
+    right: -45%;
+    width: 100%;
+    color: #f9f6f6;
+    font-size: 1vw;
+    z-index: 1;
+    font-weight: bold;
+}
+
+#video-progress-DOM-based-XSS {
+    border: none;
+    position: fixed;
+    bottom: 40%;
+    right: 1%;
+    height: 2%;
+    width: 23%;
+    z-index: 1;
+}
+
+#DOM-based-XSS-Skills {
+    position: fixed;
+    bottom: 42%;
+    right: -32%;
+    width: 100%;
+    color: #f9f6f6;
+    font-size: 1vw;
+    z-index: 1;
+    font-weight: bold;
+}
+
+#DOM-based-XSS-Skills-Value {
+    position: fixed;
+    bottom: 42%;
+    right: -45%;
+    width: 100%;
+    color: #f9f6f6;
+    font-size: 1vw;
+    z-index: 1;
+    font-weight: bold;
+}
+
+#video-progress-Sim-Zone-Skills-Progress {
+    border: none;
+    position: fixed;
+    bottom: 32%;
+    right: 1%;
+    height: 2%;
+    width: 23%;
+    z-index: 1;
+}
+
+#Sim-Zone-Skills {
+    position: fixed;
+    bottom: 34%;
+    right: -32%;
+    width: 100%;
+    color: #f9f6f6;
+    font-size: 1vw;
+    z-index: 1;
+    font-weight: bold;
+}
+
+#Sim-Zone-Skills-Value {
+    position: fixed;
+    bottom: 34%;
+    right: -45%;
+    width: 100%;
+    color: #f9f6f6;
+    font-size: 1vw;
+    z-index: 1;
+    font-weight: bold;
+}
+
+#game_progress_text {
+    position: fixed;
+    bottom: 65%;
+    right: -32%;
+    width: 100%;
+    color: #f9f6f6;
+    font-size: 1vw;
+    z-index: 1;
+    font-weight: bold;
+}
+
+#game_progress_text-statboard {
+    position: fixed;
+    bottom: 56%;
+    left: 36%;
+    width: 100%;
+    color: #f9f6f6;
+    font-size: 1.2vw;
+    z-index: 1;
+    font-weight: bold;
+}
+
+/* ===== PROGRESS BAR COLOR SCHEMES ===== */
+.progress-bar-Ref-skills::-webkit-progress-bar {
+    background-color: #808080;
+    width: 100%;
+}
+
+.progress-bar-Ref-skills {
+    background-color: #808080;
+}
+
+.progress-bar-Ref-skills::-webkit-progress-value {
+    background-color: #F51008 !important;
+}
+
+.progress-bar-Ref-skills::-moz-progress-bar {
+    background-color: #F51008 !important;
+}
+
+.progress-bar-Ref-skills {
+    color: #F51008;
+}
+
+.progress-bar-Stored-skills::-webkit-progress-bar {
+    background-color: #808080;
+    width: 100%;
+}
+
+.progress-bar-Stored-skills {
+    background-color: #808080;
+}
+
+.progress-bar-Stored-skills::-webkit-progress-value {
+    background-color: #13D73E !important;
+}
+
+.progress-bar-Stored-skills::-moz-progress-bar {
+    background-color: #13D73E !important;
+}
+
+.progress-bar-Stored-skills {
+    color: #13D73E;
+}
+
+.progress-bar-DOM-skills::-webkit-progress-bar {
+    background-color: #808080;
+    width: 100%;
+}
+
+.progress-bar-DOM-skills {
+    background-color: #808080;
+}
+
+.progress-bar-DOM-skills::-webkit-progress-value {
+    background-color: #2986cc !important;
+}
+
+.progress-bar-DOM-skills::-moz-progress-bar {
+    background-color: #2986cc !important;
+}
+
+.progress-bar-DOM-skills {
+    color: #2986cc;
+}
+
+.progress-bar-Overall-skills::-webkit-progress-bar {
+    background-color: #808080;
+    width: 100%;
+}
+
+.progress-bar-Overall-skills {
+    background-color: #808080;
+}
+
+.progress-bar-Overall-skills::-webkit-progress-value {
+    background-color: #F0C808 !important;
+}
+
+.progress-bar-Overall-skills::-moz-progress-bar {
+    background-color: #F0C808 !important;
+}
+
+.progress-bar-Overall-skills {
+    color: #F0C808;
+}
+
+.progress-bar-Ref-skills-statboard::-webkit-progress-bar {
+    background-color: #808080;
+    width: 100%;
+}
+
+.progress-bar-Ref-skills-statboard {
+    background-color: #808080;
+}
+
+.progress-bar-Ref-skills-statboard::-webkit-progress-value {
+    background-color: #F51008 !important;
+}
+
+.progress-bar-Ref-skills-statboard::-moz-progress-bar {
+    background-color: #F51008 !important;
+}
+
+.progress-bar-Ref-skills-statboard {
+    color: #F51008;
+}
+
+.progress-bar-Stored-skills-statboard::-webkit-progress-bar {
+    background-color: #808080;
+    width: 100%;
+}
+
+.progress-bar-Stored-skills-statboard {
+    background-color: #808080;
+}
+
+.progress-bar-Stored-skills-statboard::-webkit-progress-value {
+    background-color: #13D73E !important;
+}
+
+.progress-bar-Stored-skills-statboard::-moz-progress-bar {
+    background-color: #13D73E !important;
+}
+
+.progress-bar-Stored-skills-statboard {
+    color: #13D73E;
+}
+
+.progress-bar-DOM-skills-statboard::-webkit-progress-bar {
+    background-color: #808080;
+    width: 100%;
+}
+
+.progress-bar-DOM-skills-statboard {
+    background-color: #808080;
+}
+
+.progress-bar-DOM-skills-statboard::-webkit-progress-value {
+    background-color: #2986cc !important;
+}
+
+.progress-bar-DOM-skills-statboard::-moz-progress-bar {
+    background-color: #2986cc !important;
+}
+
+.progress-bar-DOM-skills-statboard {
+    color: #2986cc;
+}
+
+.progress-bar-Overall-skills-statboard::-webkit-progress-bar {
+    background-color: #808080;
+    width: 100%;
+}
+
+.progress-bar-Overall-skills-statboard {
+    background-color: #808080;
+}
+
+.progress-bar-Overall-skills-statboard::-webkit-progress-value {
+    background-color: #F0C808 !important;
+}
+
+.progress-bar-Overall-skills-statboard::-moz-progress-bar {
+    background-color: #F0C808 !important;
+}
+
+.progress-bar-Overall-skills-statboard {
+    color: #F0C808;
+}
+
+/* ===== TAB BUTTONS ===== */
+.tabbutton {
+    position: fixed;
+    width: 7.1%;
+    height: 5%;
+    background-color: #ff0000;
+    border: none;
+    color: white;
+    border: 0.1vw solid #ff0000;
+    font-size: 1vw;
+    cursor: pointer;
+    z-index: 1;
+}
+
+.tabbutton:hover {
+    background-color: #f5b330 !important;
+    color: rgb(0, 0, 0) !important;
+}
+
+.tabbutton2 {
+    background-color: #000000;
+}
+
+.tabbutton3 {
+    background-color: #000000;
+}
+
+.tabbutton4 {
+    background-color: #000000;
+}
+
+.tabbutton5 {
+    background-color: #000000;
+}
